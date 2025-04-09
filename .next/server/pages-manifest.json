@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/admin": "pages/admin.js",
+  "/api/outlines": "pages/api/outlines.js",
+  "/api/impacts": "pages/api/impacts.js",
+  "/api/times": "pages/api/times.js",
+  "/api/technologies": "pages/api/technologies.js",
+  "/api/majors": "pages/api/majors.js"
+}
