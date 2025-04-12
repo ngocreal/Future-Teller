@@ -1,0 +1,277 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  position: relative;
+}
+
+.initialContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px; /* Đặt ở top center */
+}
+
+.cardSpread {
+  position: relative;
+  width: 240px;
+  height: 180px;
+}
+
+.cardSpread .card {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  background-color: #ff8c00;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-image: url('/images/card-back.png');
+  background-size: cover;
+}
+
+.cardSpread .card:nth-child(1) { transform: translateX(-40px) rotate(-15deg); }
+.cardSpread .card:nth-child(2) { transform: translateX(-20px) rotate(-5deg); }
+.cardSpread .card:nth-child(3) { transform: translateX(20px) rotate(5deg); }
+.cardSpread .card:nth-child(4) { transform: translateX(40px) rotate(15deg); }
+
+.startButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.startButton:hover {
+  background-color: #0056b3;
+}
+
+.movingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.cardMoving {
+  position: relative;
+  width: 240px;
+  height: 180px;
+}
+
+.cardMoving .card {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  background-color: #ff8c00;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-image: url('/images/card-back.png');
+  background-size: cover;
+  animation: moveToCenter 1s forwards;
+}
+
+.cardMoving .card:nth-child(1) { animation-delay: 0s; }
+.cardMoving .card:nth-child(2) { animation-delay: 0.1s; }
+.cardMoving .card:nth-child(3) { animation-delay: 0.2s; }
+.cardMoving .card:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes moveToCenter {
+  0% { transform: translateX(-40px) rotate(-15deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+
+.shuffleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.cardShuffle {
+  position: relative;
+  width: 240px;
+  height: 180px;
+}
+
+.cardShuffle .card {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  background-color: #ff8c00;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-image: url('/images/card-back.png');
+  background-size: cover;
+  animation: shuffle 1s infinite;
+}
+
+.cardShuffle .card:nth-child(1) { animation-delay: 0s; }
+.cardShuffle .card:nth-child(2) { animation-delay: 0.2s; }
+.cardShuffle .card:nth-child(3) { animation-delay: 0.4s; }
+.cardShuffle .card:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes shuffle {
+  0% { transform: translateX(-60px) rotate(-10deg); }
+  50% { transform: translateX(60px) rotate(10deg); }
+  100% { transform: translateX(-60px) rotate(-10deg); }
+}
+
+.cardStack {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 180px;
+  cursor: pointer;
+}
+
+.cardStack .card {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  background-color: #ff8c00;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-image: url('/images/card-back.png');
+  background-size: cover;
+}
+
+.cardStack .card:nth-child(1) { transform: translateX(-2px) translateY(-2px); }
+.cardStack .card:nth-child(2) { transform: translateX(0) translateY(0); }
+.cardStack .card:nth-child(3) { transform: translateX(2px) translateY(2px); }
+.cardStack .card:nth-child(4) { transform: translateX(4px) translateY(4px); }
+
+.cardsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px; /* Đặt ở top center */
+}
+
+.dealContainer {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px; /* Đặt ở top center */
+}
+
+.cardDeal {
+  width: 120px;
+  height: 180px;
+  animation: dealFromBottom 0.5s forwards;
+}
+
+/* Định vị các lá bài từ trái sang phải */
+.cardPosition0 { transform: translateX(-180px); }
+.cardPosition1 { transform: translateX(-60px); }
+.cardPosition2 { transform: translateX(60px); }
+.cardPosition3 { transform: translateX(180px); }
+
+@keyframes dealFromBottom {
+  0% {
+    transform: translateY(calc(100vh - 230px)) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.cardsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.card {
+  width: 120px;
+  height: 180px;
+  perspective: 1000px;
+}
+
+.cardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .cardInner {
+  transform: rotateY(180deg);
+}
+
+.cardBack, .cardFront {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 2px solid #000;
+  border-radius: 8px;
+}
+
+.cardBack {
+  background-color: #ff8c00;
+  background-image: url('/images/card-back.png');
+  background-size: cover;
+}
+
+.cardFront {
+  transform: rotateY(180deg);
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.cardFront img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.questionContainer {
+  margin-top: 20px; /* Cách các lá bài một khoảng nhỏ */
+}
+
+.question {
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+
+.footer {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px;
+}
+
+.suggestionButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.suggestionButton:hover {
+  background-color: #0056b3;
+}

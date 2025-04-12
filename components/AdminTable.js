@@ -16,13 +16,11 @@ const AdminTable = ({ data, table, onEdit, onDelete }) => {
                 <>
                   <th>Bước</th>
                   <th>Thời gian</th>
-                  <th>Nội dung</th>
-                  <th>Gợi ý</th>
+                  <th>Tiêu đề</th>
                   <th>Emoji</th>
                 </>
               )}
-              <th>{table === 'times' ? 'Thời điểm' : table === 'majors' ? 'Ngành' : table === 'technologies' ? 'Công nghệ' : table === 'impacts' ? 'Tác động' : 'Gợi ý'}</th>
-              <th>Ảnh</th>
+              <th>{table === 'times' ? 'Thời điểm' : table === 'majors' ? 'Ngành' : table === 'technologies' ? 'Công nghệ' : table === 'impacts' ? 'Tác động' : 'Gợi ý'}</th>              
             </>
           ) : null}
           <th>Thao tác</th>
@@ -38,12 +36,18 @@ const AdminTable = ({ data, table, onEdit, onDelete }) => {
                   <>
                     <td>{item.step}</td>
                     <td>{item.time}</td>
-                    <td>{item.content}</td>
-                    <td>{item.suggest}</td>
-                    <td>{item.emoji || '-'}</td>
+                    <td>{item.title}</td>
+                    <td>
+                      {item.emoji ? (
+                        <span style={{ fontSize: '20px' }}>{item.emoji}</span>
+                      ) : (
+                        '-'
+                      )}
+                    </td>
                   </>
                 )}
                 <td>{item.title}</td>
+                {/* {table !== 'outlines' && (
                 <td>
                   {item.image ? (
                     <img src={item.image} alt={item.title} style={{ width: '100px', height: '100px' }} />
@@ -51,6 +55,7 @@ const AdminTable = ({ data, table, onEdit, onDelete }) => {
                     'Không có ảnh'
                   )}
                 </td>
+                )} */}
               </>
             ) : null}
             <td>

@@ -1,156 +1,301 @@
 .container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .logoutButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .tab {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .activeTab {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .tableHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .addButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th,
-  .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #1a3c5e;
-    color: white;
-  }
-  
-  .table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .editButton {
-    background-color: #ffc107;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 5px;
-  }
-  
-  .deleteButton {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .popupOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popup {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;
-  }
-  
-  .popup h2 {
-    margin-top: 0;
-  }
-  
-  .popup input,
-  .popup textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .popupButtons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  .popupButtons button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .popupButtons button:first-child {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .popupButtons button:last-child {
-    background-color: #6c757d;
-    color: white;
-  }
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logoutButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.activeTab {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.addButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #1a3c5e;
+  color: white;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.editButton {
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* CSS cho popup  */
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: white;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  padding: 0;
+  position: relative;
+  max-height: 80vh; /* Giới hạn chiều cao tối đa */
+  overflow-y: auto; /* Thêm scroll nếu nội dung dài */
+  font-family: Arial, sans-serif; /* Đồng bộ font với container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm shadow cho popup */
+}
+
+.popupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff; /* Đồng bộ màu với các nút */
+  color: white;
+  padding: 10px 15px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: grab;
+  user-select: none;
+}
+
+.popupHeader:active {
+  cursor: grabbing;
+}
+
+.popupHeader h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center; /* Căn giữa tiêu đề */
+  flex: 1; /* Đảm bảo tiêu đề chiếm toàn bộ không gian giữa */
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white; /* Đồng bộ màu với popupHeader */
+  cursor: pointer;
+}
+
+.formContainer {
+  padding: 15px;
+}
+
+.formGroup {
+  margin-bottom: 10px;
+}
+
+.formGroup .emoji {
+  font-size: 24px;
+  text-align: center;
+}
+
+.formGroup h3 {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.formGroup p {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 10px 0;
+  line-height: 1.5;
+}
+
+.formLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.formInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px; /* Đồng bộ border-radius */
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.formTextarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px; /* Đồng bộ border-radius */
+  font-size: 14px;
+  min-height: 80px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.emojiDisplay {
+  font-size: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.emojiButton {
+  background: none;
+  border: none;
+  color: #007bff; /* Đồng bộ màu với các nút */
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.emojiButton:hover {
+  text-decoration: underline;
+}
+
+.emojiPicker {
+  position: absolute;
+  z-index: 1001;
+  top: 100%;
+  left: 0;
+}
+
+.imagePreview {
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
+  border-radius: 4px; /* Đồng bộ border-radius */
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border-top: 1px solid #ddd;
+  background: #f9f9f9; /* Thêm background nhẹ để đồng bộ với table tr:nth-child(even) */
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.saveButton,
+.cancelButton,
+.nextButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px; /* Đồng bộ border-radius */
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.saveButton {
+  background-color: #007bff; /* Đồng bộ màu với các nút */
+  color: white;
+}
+
+.saveButton:hover {
+  background-color: #0056b3; /* Đồng bộ màu hover với activeTab */
+}
+
+.cancelButton {
+  background-color: #dc3545; /* Giữ màu hiện tại */
+  color: white;
+}
+
+.cancelButton:hover {
+  background-color: #c82333; /* Thêm hover đồng bộ */
+}
+
+.nextButton {
+  background-color: #6c757d; /* Màu xám giống mẫu */
+  color: white;
+  border-radius: 20px; /* Border-radius đặc biệt cho nút "Bước kế tiếp" */
+}
+
+.nextButton:hover {
+  background-color: #5a6268;
+}

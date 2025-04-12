@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Admin.module.css';
+import EmojiPicker from 'emoji-picker-react';
 
-const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
+const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mode }) => {
   const [formData, setFormData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const popupRef = useRef(null);
 
-  // Cập nhật formData và imagePreview khi initialData thay đổi
   useEffect(() => {
     if (initialData) {
       setFormData(initialData);
       setImagePreview(initialData.image || null);
     } else {
-      setFormData({});
+      setFormData({ emoji: '😊' }); // Đặt giá trị mặc định cho emoji
       setImagePreview(null);
     }
   }, [initialData]);
@@ -26,86 +31,218 @@ const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
     }
   };
 
+  const handleEmojiClick = (emojiObject) => {
+    setFormData({ ...formData, emoji: emojiObject.emoji });
+    setShowEmojiPicker(false);
+  };
+
   const handleSubmit = () => {
     const data = new FormData();
-    for (const key in formData) {
-      if (key !== 'image' || (key === 'image' && formData[key] instanceof File)) {
-        data.append(key, formData[key]);
+    if (table === 'outlines') {
+      data.append('step', formData.step || '');
+      data.append('title', formData.title || '');
+      data.append('time', formData.time || '');
+      data.append('content', formData.content || '');
+      data.append('suggest', formData.suggest || '');
+      data.append('emoji', formData.emoji || '😊'); // Đảm bảo emoji luôn có giá trị
+    } else {
+      data.append('title', formData.title || '');
+      if (formData.image instanceof File) {
+        data.append('image', formData.image);
       }
     }
-    if (initialData?.id) {
-      data.append('id', initialData.id); // Đảm bảo gửi id khi sửa
+    // Chỉ gửi id nếu nó tồn tại và là số hợp lệ
+    const id = initialData?.id;
+    if (id && !isNaN(id) && id > 0) {
+      data.append('id', id.toString());
     }
     onSave(data);
     onClose();
   };
 
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    const rect = popupRef.current.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className={styles.popupOverlay}>
-      <div className={styles.popup}>
-        <h2>{initialData ? 'Sửa' : 'Thêm'} {table === 'times' ? 'Thời điểm' : table === 'majors' ? 'Ngành' : table === 'technologies' ? 'Công nghệ' : table === 'impacts' ? 'Tác động' : 'Gợi ý'}</h2>
-        {table === 'times' || table === 'majors' || table === 'technologies' || table === 'impacts' || table === 'outlines' ? (
-          <>
+    <div
+      className={styles.popupOverlay}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    >
+      <div
+        className={styles.popup}
+        ref={popupRef}
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px)`,
+          cursor: isDragging ? 'grabbing' : 'default',
+        }}
+      >
+        <div className={styles.popupHeader} onMouseDown={handleMouseDown}>
+          <h2>
+            {mode === 'suggestion'
+              ? 'Quy trình thảo luận'
+              : (initialData ? 'Sửa' : 'Thêm') +
+                ' ' +
+                (table === 'times'
+                  ? 'Thời điểm'
+                  : table === 'majors'
+                  ? 'Ngành'
+                  : table === 'technologies'
+                  ? 'Công nghệ'
+                  : table === 'impacts'
+                  ? 'Tác động'
+                  : 'Gợi ý')}
+          </h2>
+          <button className={styles.closeButton} onClick={onClose}>
+            ×
+          </button>
+        </div>
+
+        {mode === 'suggestion' ? (
+          <div className={styles.formContainer}>
+            <div className={styles.formGroup}>
+              <p className={styles.emoji}>{initialData.emoji}</p>
+            </div>
+            <div className={styles.formGroup}>
+              <h3>
+                {initialData.step}. {initialData.title} - {initialData.time}
+              </h3>
+            </div>
+            <div className={styles.formGroup}>
+              <p>{initialData.content}</p>
+            </div>
+            <div className={styles.formGroup}>
+              <p>{initialData.suggest}</p>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.formContainer}>
             {table === 'outlines' && (
               <>
-                <input
-                  type="text"
-                  name="step"
-                  placeholder="Bước"
-                  value={formData.step || ''}
-                  onChange={handleChange}
-                />
-                <input
-                  type="text"
-                  name="time"
-                  placeholder="Thời gian"
-                  value={formData.time || ''}
-                  onChange={handleChange}
-                />
-                <textarea
-                  name="content"
-                  placeholder="Nội dung"
-                  value={formData.content || ''}
-                  onChange={handleChange}
-                ></textarea>
-                <textarea
-                  name="suggest"
-                  placeholder="Gợi ý"
-                  value={formData.suggest || ''}
-                  onChange={handleChange}
-                ></textarea>
-                <input
-                  type="text"
-                  name="emoji"
-                  placeholder="Emoji"
-                  value={formData.emoji || ''}
-                  onChange={handleChange}
-                />
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Bước</label>
+                  <input
+                    type="text"
+                    name="step"
+                    value={formData.step || ''}
+                    onChange={handleChange}
+                    className={styles.formInput}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Thời gian</label>
+                  <input
+                    type="text"
+                    name="time"
+                    value={formData.time || ''}
+                    onChange={handleChange}
+                    className={styles.formInput}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Nội dung</label>
+                  <textarea
+                    name="content"
+                    value={formData.content || ''}
+                    onChange={handleChange}
+                    className={styles.formTextarea}
+                  ></textarea>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Gợi ý</label>
+                  <textarea
+                    name="suggest"
+                    value={formData.suggest || ''}
+                    onChange={handleChange}
+                    className={styles.formTextarea}
+                  ></textarea>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>
+                    Emoji{' '}
+                    <span
+                      className={styles.emojiDisplay}
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    >
+                      {formData.emoji || '😊'}
+                    </span>
+                  </label>
+                  {showEmojiPicker && (
+                    <div className={styles.emojiPicker}>
+                      <EmojiPicker onEmojiClick={handleEmojiClick} />
+                    </div>
+                  )}
+                </div>
               </>
             )}
-            <input
-              type="text"
-              name="title"
-              placeholder="Tiêu đề"
-              value={formData.title || ''}
-              onChange={handleChange}
-            />
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-            />
-            {imagePreview && (
-              <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '10px' }} />
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Tiêu đề</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title || ''}
+                onChange={handleChange}
+                className={styles.formInput}
+              />
+            </div>
+            {table !== 'outlines' && (
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Ảnh</label>
+                <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className={styles.formInput}
+                />
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className={styles.imagePreview}
+                  />
+                )}
+              </div>
             )}
-          </>
-        ) : null}
+          </div>
+        )}
+
         <div className={styles.popupButtons}>
-          <button onClick={handleSubmit}>Lưu</button>
-          <button onClick={onClose}>Hủy</button>
+          {mode === 'suggestion' ? (
+            <button onClick={onNext} className={styles.nextButton}>
+              Bước kế tiếp
+            </button>
+          ) : (
+            <>
+              <button onClick={handleSubmit} className={styles.saveButton}>
+                Lưu
+              </button>
+              <button onClick={onClose} className={styles.cancelButton}>
+                Hủy
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
