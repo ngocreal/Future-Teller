@@ -2,7 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/": "pages/index.js",
   "/admin": "pages/admin.js",
-  "/api/player": "pages/api/player.js",
-  "/player": "pages/player.js"
+  "/api/outlines": "pages/api/outlines.js",
+  "/api/times": "pages/api/times.js"
 }
