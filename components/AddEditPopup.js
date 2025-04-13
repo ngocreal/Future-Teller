@@ -12,14 +12,14 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
   const popupRef = useRef(null);
 
   useEffect(() => {
-    if (initialData) {
+    if (initialData && isOpen) {
       setFormData(initialData);
       setImagePreview(initialData.image || null);
     } else {
-      setFormData({ emoji: '😊' }); // Đặt giá trị mặc định emo
+      setFormData({ emoji: '😊' });
       setImagePreview(null);
     }
-  }, [initialData]);
+  }, [initialData, isOpen]);
 
   const handleChange = (e) => {
     if (e.target.name === 'image') {
@@ -60,12 +60,14 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
   };
 
   const handleMouseDown = (e) => {
-    setIsDragging(true);
-    const rect = popupRef.current.getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    if (popupRef.current) {
+      setIsDragging(true);
+      const rect = popupRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
   };
 
   const handleMouseMove = (e) => {
@@ -104,7 +106,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                 Quy trình thảo luận
               </h1>
               <button className={styles.closeButton} onClick={onClose}>
-                ×
+                X
               </button>
             </>
           ) : (
@@ -132,8 +134,8 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
           <div className={styles.formContainer}>
             {initialData ? (
               <>
-                <h2 style={{ textAlign: 'center' }}>     
-                    {initialData.step}. {initialData.title}        
+                <h2 style={{ textAlign: 'center' }}>
+                  {initialData.step}. {initialData.title}
                 </h2>
                 <h2 style={{ textAlign: 'center' }}>({initialData.time})</h2>
                 <p>{initialData.content}</p>
@@ -187,7 +189,13 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>
-                    Emoji <span className={styles.emojiDisplay} onClick={() => setShowEmojiPicker(!showEmojiPicker)}>{formData.emoji || '😊'}</span>
+                    Emoji{' '}
+                    <span
+                      className={styles.emojiDisplay}
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    >
+                      {formData.emoji || '😊'}
+                    </span>
                   </label>
                   {showEmojiPicker && (
                     <div className={styles.emojiPicker}>

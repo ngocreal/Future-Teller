@@ -3,6 +3,5 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/player": "pages/player.js",
-  "/admin": "pages/admin.js",
-  "/api/player": "pages/api/player.js"
+  "/admin": "pages/admin.js"
 }

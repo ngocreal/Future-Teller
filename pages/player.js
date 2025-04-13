@@ -3,7 +3,7 @@ import styles from '../styles/Player.module.css';
 import AddEditPopup from '../components/AddEditPopup';
 
 const Player = () => {
-  const [gameState, setGameState] = useState('initial'); // initial, movingToCenter, shuffling, stopped, dealing, dealt, flipping, flipped
+  const [gameState, setGameState] = useState('initial'); // (initial, movingToCenter, shuffling, stopped, dealing, dealt, flipping, flipped)
   const [cards, setCards] = useState([]); // list 4 lá bài
   const [question, setQuestion] = useState(''); // ques ghép
   const [outlines, setOutlines] = useState([]); // db outlines
@@ -68,33 +68,37 @@ const Player = () => {
   };
 
   // Lật bài lần lượt
-  const flipCardsSequentially = () => {
-    let index = 0;
-    const interval = setInterval(() => {
+  const flipCardsSequentially = async () => {
+    console.log('Starting flipCardsSequentially...');
+  
+    // Hàm delay để chờ 500ms
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
+    // Lật từng thẻ
+    for (let index = 0; index < 4; index++) {
       setFlippedCards((prev) => {
         const newFlipped = [...prev];
         newFlipped[index] = true;
+        console.log('Updated flippedCards:', newFlipped);
         return newFlipped;
       });
-      index++;
-      if (index === 4) {
-        clearInterval(interval);
-        setGameState('flipped');
-        // Hiển thị câu hỏi
-        if (cards.length === 4) {
-          const timeTitle = cards[0].title;
-          let questionText = '';
-          if (timeTitle === 'Con người có thể sống trên mặt trăng') {
-            questionText = `[${timeTitle}], khi [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] như thế nào?`;
-          } else if (timeTitle === 'Sau Thế chiến thứ 3') {
-            questionText = `[${timeTitle}], [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] ra sao?`;
-          } else {
-            questionText = `[${timeTitle}], [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] gì?`;
-          }
-          setQuestion(questionText);
-        }
+      await delay(500); // Chờ 500ms trước khi lật thẻ tiếp theo
+    }
+  
+    // Khi lật xong
+    setGameState('flipped');
+    if (cards.length === 4) {
+      const timeTitle = cards[0].title;
+      let questionText = '';
+      if (timeTitle === 'Con người có thể sống trên mặt trăng') {
+        questionText = `[${timeTitle}], khi [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] như thế nào?`;
+      } else if (timeTitle === 'Sau Thế chiến thứ 3') {
+        questionText = `[${timeTitle}], [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] ra sao?`;
+      } else {
+        questionText = `[${timeTitle}], [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] gì?`;
       }
-    }, 500); // mỗi lá bài lật cách 0.5 giây
+      setQuestion(questionText);
+    }
   };
 
   // Mở pop
