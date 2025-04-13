@@ -4,17 +4,17 @@ import AddEditPopup from '../components/AddEditPopup';
 
 const Player = () => {
   const [gameState, setGameState] = useState('initial'); // initial, movingToCenter, shuffling, stopped, dealing, dealt, flipping, flipped
-  const [cards, setCards] = useState([]); // Danh sách 4 lá bài
-  const [question, setQuestion] = useState(''); // Câu hỏi ghép từ 4 bảng
-  const [outlines, setOutlines] = useState([]); // Dữ liệu gợi ý từ bảng outlines
+  const [cards, setCards] = useState([]); // list 4 lá bài
+  const [question, setQuestion] = useState(''); // ques ghép
+  const [outlines, setOutlines] = useState([]); // db outlines
   const [currentOutlineIndex, setCurrentOutlineIndex] = useState(0); // Chỉ số gợi ý hiện tại
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [flippedCards, setFlippedCards] = useState([false, false, false, false]); // Trạng thái lật bài
+  const [flippedCards, setFlippedCards] = useState([false, false, false, false]); // tt lật bài
   const [showStartButton, setShowStartButton] = useState(true); //tt nút bắt đầu
   const [dealtCards, setDealtCards] = useState([]); // list lá bài đã được phát
   const [showCardStack, setShowCardStack] = useState(true); // tt xấp bài
 
-  // Lấy dữ liệu từ API khi trang tải
+  // Lấy dữ liệu từ API khi tải trang
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch('/api/player');
@@ -36,7 +36,6 @@ const Player = () => {
     fetchData();
   }, []);
 
-  // Bắt đầu: Di chuyển lá bài về giữa, xáo bài, gộp thành xấp
   const startShuffling = () => {
     setShowStartButton(false); // Ẩn nút bắt đầu
     setGameState('movingToCenter');
@@ -44,11 +43,11 @@ const Player = () => {
       setGameState('shuffling');
       setTimeout(() => {
         setGameState('stopped');
-      }, 3000); // Xáo bài trong 3 giây
-    }, 1000); // Di chuyển về giữa trong 1 giây
+      }, 3000); // Xáo bài
+    }, 1000); // Di chuyển về giữa
   };
 
-  // Phát bài từng lá từ trái sang phải
+  // Phát từ trái sang phải
   const dealCards = () => {
     setGameState('dealing');
     let index = 0;
@@ -57,15 +56,15 @@ const Player = () => {
       index++;
       if (index === 4) {
         clearInterval(interval);
-        setShowCardStack(false); // Ẩn xấp bài khi phát lá cuối cùng
+        setShowCardStack(false); // Ẩn khi phát lá cuối cùng
         setGameState('dealt');
-        // Sau 3 giây nghỉ, tự động lật bài
+        // tự động lật sau 3 giây nghỉ
         setTimeout(() => {
           setGameState('flipping');
           flipCardsSequentially();
         }, 3000);
       }
-    }, 500); // Phát mỗi lá cách nhau 0.5 giây
+    }, 500); // Phát mỗi lá cách 0.5 giây
   };
 
   // Lật bài lần lượt
@@ -81,7 +80,7 @@ const Player = () => {
       if (index === 4) {
         clearInterval(interval);
         setGameState('flipped');
-        // Hiển thị câu hỏi sau khi lật hết
+        // Hiển thị câu hỏi
         if (cards.length === 4) {
           const timeTitle = cards[0].title;
           let questionText = '';
@@ -95,17 +94,17 @@ const Player = () => {
           setQuestion(questionText);
         }
       }
-    }, 500); // Lật mỗi lá cách nhau 0.5 giây
+    }, 500); // mỗi lá bài lật cách 0.5 giây
   };
 
-  // Mở popup gợi ý
+  // Mở pop
   const openSuggestion = () => {
     if (outlines.length > 0) {
       setIsPopupOpen(true);
     }
   };
 
-  // Đóng popup gợi ý và reset chỉ số gợi ý
+  // Đóng pop
   const closePopup = () => {
     setIsPopupOpen(false);
     setCurrentOutlineIndex(0); // Reset về gợi ý đầu tiên khi đóng
@@ -116,14 +115,13 @@ const Player = () => {
     if (currentOutlineIndex + 1 < outlines.length) {
       setCurrentOutlineIndex((prev) => prev + 1);
     } else {
-      setIsPopupOpen(false);
-      setCurrentOutlineIndex(0);
+      setIsPopupOpen(false); // Đóng popup khi hết
+      setCurrentOutlineIndex(0); // Reset về bước đầu
     }
   };
 
   return (
     <div className={styles.container}>
-      {/* Trang đầu: Các lá bài xòe ra và nút bắt đầu */}
       {gameState === 'initial' && (
         <div className={styles.initialContainer}>
           <div className={styles.cardSpread}>
@@ -152,7 +150,7 @@ const Player = () => {
         </div>
       )}
 
-      {/* Animation xáo bài */}
+      {/* Animation xào bài */}
       {gameState === 'shuffling' && (
         <div className={styles.shuffleContainer}>
           <div className={styles.cardShuffle}>
@@ -164,7 +162,7 @@ const Player = () => {
         </div>
       )}
 
-      {/* Chồng bài sau khi xáo */}
+      {/* sau khi xào gom lại 1 chồng */}
       {(gameState === 'stopped' || gameState === 'dealing') && showCardStack && (
         <div className={styles.cardStack} onClick={dealCards}>
           <div className={styles.card}></div>
@@ -190,7 +188,7 @@ const Player = () => {
         </div>
       )}
 
-      {/* Hiển thị 4 lá bài sau khi phát */}
+      {/* Lật bài*/}
       {(gameState === 'dealt' || gameState === 'flipping' || gameState === 'flipped') && (
         <div className={styles.cardsWrapper}>
           <div className={styles.cardsContainer}>
@@ -225,7 +223,7 @@ const Player = () => {
         </div>
       )}
 
-      {/* Popup gợi ý */}
+      {/* Pop gợi ý */}
       {isPopupOpen && outlines[currentOutlineIndex] && (
         <AddEditPopup
           isOpen={isPopupOpen}

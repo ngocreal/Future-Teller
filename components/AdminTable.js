@@ -20,7 +20,11 @@ const AdminTable = ({ data, table, onEdit, onDelete }) => {
                   <th>Emoji</th>
                 </>
               )}
-              <th>{table === 'times' ? 'Thời điểm' : table === 'majors' ? 'Ngành' : table === 'technologies' ? 'Công nghệ' : table === 'impacts' ? 'Tác động' : 'Gợi ý'}</th>              
+              {table !== 'outlines' && (
+                <th>
+                  {table === 'times' ? 'Thời điểm' : table === 'majors' ? 'Ngành' : table === 'technologies' ? 'Công nghệ' : table === 'impacts' ? 'Tác động' : ''}
+                </th>
+              )}
             </>
           ) : null}
           <th>Thao tác</th>
@@ -46,16 +50,9 @@ const AdminTable = ({ data, table, onEdit, onDelete }) => {
                     </td>
                   </>
                 )}
-                <td>{item.title}</td>
-                {/* {table !== 'outlines' && (
-                <td>
-                  {item.image ? (
-                    <img src={item.image} alt={item.title} style={{ width: '100px', height: '100px' }} />
-                  ) : (
-                    'Không có ảnh'
-                  )}
-                </td>
-                )} */}
+                {table !== 'outlines' && (
+                  <td>{item.title}</td>
+                )}
               </>
             ) : null}
             <td>

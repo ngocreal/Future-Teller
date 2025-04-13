@@ -37,7 +37,7 @@ export default function Admin() {
   };
 
   const handleEdit = (item) => {
-    console.log('Editing item:', item); // Debug để kiểm tra dữ liệu
+    console.log('Editing item:', item); // Debug kiểm tra dữ liệu
     setEditData(item);
     setIsPopupOpen(true);
   };

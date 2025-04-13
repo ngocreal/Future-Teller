@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background-color: #f0f0f0;
+  background-color: #fcefd4;
   font-family: Arial, sans-serif;
   padding: 20px;
   position: relative;
@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px; /* Đặt ở top center */
+  margin-top: 50px; /* top center */
 }
 
 .cardSpread {
@@ -26,7 +26,7 @@
   position: absolute;
   width: 120px;
   height: 180px;
-  background-color: #ff8c00;
+  background-color: #e65a00;
   border: 2px solid #000;
   border-radius: 8px;
   background-image: url('/images/card-back.png');
@@ -39,8 +39,8 @@
 .cardSpread .card:nth-child(4) { transform: translateX(40px) rotate(15deg); }
 
 .startButton {
-  background-color: #007bff;
-  color: white;
+  background-color: #3f99e9;
+  color: #fcefd4;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -50,7 +50,7 @@
 }
 
 .startButton:hover {
-  background-color: #0056b3;
+  background-color: #1b1b62;
 }
 
 .movingContainer {
@@ -70,7 +70,7 @@
   position: absolute;
   width: 120px;
   height: 180px;
-  background-color: #ff8c00;
+  background-color: #e65a00;
   border: 2px solid #000;
   border-radius: 8px;
   background-image: url('/images/card-back.png');
@@ -105,7 +105,7 @@
   position: absolute;
   width: 120px;
   height: 180px;
-  background-color: #ff8c00;
+  background-color: #e65a00;
   border: 2px solid #000;
   border-radius: 8px;
   background-image: url('/images/card-back.png');
@@ -138,7 +138,7 @@
   position: absolute;
   width: 120px;
   height: 180px;
-  background-color: #ff8c00;
+  background-color: #e65a00;
   border: 2px solid #000;
   border-radius: 8px;
   background-image: url('/images/card-back.png');
@@ -154,14 +154,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px; /* Đặt ở top center */
+  margin-top: 50px; 
 }
 
 .dealContainer {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 50px; /* Đặt ở top center */
+  margin-top: 50px;
 }
 
 .cardDeal {
@@ -170,7 +170,7 @@
   animation: dealFromBottom 0.5s forwards;
 }
 
-/* Định vị các lá bài từ trái sang phải */
+/* Định vị các lá bài từ trái -> phải */
 .cardPosition0 { transform: translateX(-180px); }
 .cardPosition1 { transform: translateX(-60px); }
 .cardPosition2 { transform: translateX(60px); }
@@ -221,7 +221,7 @@
 }
 
 .cardBack {
-  background-color: #ff8c00;
+  background-color: #e65a00;
   background-image: url('/images/card-back.png');
   background-size: cover;
 }
@@ -243,12 +243,12 @@
 }
 
 .questionContainer {
-  margin-top: 20px; /* Cách các lá bài một khoảng nhỏ */
+  margin-top: 20px; /* khoảng cách lá bài*/
 }
 
 .question {
   font-size: 18px;
-  color: #333;
+  color: #1b1b62;
   text-align: center;
 }
 
@@ -263,8 +263,8 @@
 }
 
 .suggestionButton {
-  background-color: #007bff;
-  color: white;
+  background-color: #3f99e9;
+  color: #fcefd4;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -273,5 +273,5 @@
 }
 
 .suggestionButton:hover {
-  background-color: #0056b3;
+  background-color: #1b1b62;
 }

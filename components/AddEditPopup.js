@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Admin.module.css';
 import EmojiPicker from 'emoji-picker-react';
 
-const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mode }) => {
+const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mode = 'add' }) => {
   const [formData, setFormData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -16,7 +16,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
       setFormData(initialData);
       setImagePreview(initialData.image || null);
     } else {
-      setFormData({ emoji: '😊' }); // Đặt giá trị mặc định cho emoji
+      setFormData({ emoji: '😊' }); // Đặt giá trị mặc định emo
       setImagePreview(null);
     }
   }, [initialData]);
@@ -44,14 +44,13 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
       data.append('time', formData.time || '');
       data.append('content', formData.content || '');
       data.append('suggest', formData.suggest || '');
-      data.append('emoji', formData.emoji || '😊'); // Đảm bảo emoji luôn có giá trị
+      data.append('emoji', formData.emoji || '😊');
     } else {
       data.append('title', formData.title || '');
       if (formData.image instanceof File) {
         data.append('image', formData.image);
       }
     }
-    // Chỉ gửi id nếu nó tồn tại và là số hợp lệ
     const id = initialData?.id;
     if (id && !isNaN(id) && id > 0) {
       data.append('id', id.toString());
@@ -99,12 +98,20 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
         }}
       >
         <div className={styles.popupHeader} onMouseDown={handleMouseDown}>
-          <h2>
-            {mode === 'suggestion'
-              ? 'Quy trình thảo luận'
-              : (initialData ? 'Sửa' : 'Thêm') +
-                ' ' +
-                (table === 'times'
+          {mode === 'suggestion' ? (
+            <>
+              <h1 style={{ textAlign: 'center', margin: 0, flex: 1 }}>
+                Quy trình thảo luận
+              </h1>
+              <button className={styles.closeButton} onClick={onClose}>
+                ×
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 style={{ margin: 0, flex: 1, textAlign: 'center' }}>
+                {mode === 'edit' ? 'Sửa' : 'Thêm'}{' '}
+                {table === 'times'
                   ? 'Thời điểm'
                   : table === 'majors'
                   ? 'Ngành'
@@ -112,29 +119,29 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                   ? 'Công nghệ'
                   : table === 'impacts'
                   ? 'Tác động'
-                  : 'Gợi ý')}
-          </h2>
-          <button className={styles.closeButton} onClick={onClose}>
-            ×
-          </button>
+                  : 'Gợi ý'}
+              </h2>
+              <button className={styles.closeButton} onClick={onClose}>
+                ×
+              </button>
+            </>
+          )}
         </div>
 
         {mode === 'suggestion' ? (
           <div className={styles.formContainer}>
-            <div className={styles.formGroup}>
-              <p className={styles.emoji}>{initialData.emoji}</p>
-            </div>
-            <div className={styles.formGroup}>
-              <h3>
-                {initialData.step}. {initialData.title} - {initialData.time}
-              </h3>
-            </div>
-            <div className={styles.formGroup}>
-              <p>{initialData.content}</p>
-            </div>
-            <div className={styles.formGroup}>
-              <p>{initialData.suggest}</p>
-            </div>
+            {initialData ? (
+              <>
+                <h2 style={{ textAlign: 'center' }}>     
+                    {initialData.step}. {initialData.title}        
+                </h2>
+                <h2 style={{ textAlign: 'center' }}>({initialData.time})</h2>
+                <p>{initialData.content}</p>
+                <p>{initialData.suggest}</p>
+              </>
+            ) : (
+              <p style={{ textAlign: 'center' }}>Không có dữ liệu gợi ý.</p>
+            )}
           </div>
         ) : (
           <div className={styles.formContainer}>
@@ -180,13 +187,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>
-                    Emoji{' '}
-                    <span
-                      className={styles.emojiDisplay}
-                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                    >
-                      {formData.emoji || '😊'}
-                    </span>
+                    Emoji <span className={styles.emojiDisplay} onClick={() => setShowEmojiPicker(!showEmojiPicker)}>{formData.emoji || '😊'}</span>
                   </label>
                   {showEmojiPicker && (
                     <div className={styles.emojiPicker}>
@@ -217,11 +218,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                   className={styles.formInput}
                 />
                 {imagePreview && (
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className={styles.imagePreview}
-                  />
+                  <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
                 )}
               </div>
             )}
