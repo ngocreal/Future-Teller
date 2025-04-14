@@ -21,6 +21,7 @@
   position: relative;
   width: 240px;
   height: 180px;
+  transform: translateX(58px);
 }
 
 .cardSpread .card {
@@ -59,6 +60,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  transform: translateX(58px);
 }
 
 .cardMoving {
@@ -98,8 +100,8 @@
 
 .cardShuffle {
   position: relative;
-  width: 240px;
-  height: 180px;
+  width: 160px;
+  height: 300px;
 }
 
 .cardShuffle .card {
@@ -248,9 +250,29 @@
 }
 
 .question {
-  font-size: 18px;
+  font-size: 30px;
   color: #1b1b62;
   text-align: center;
+}
+
+.timeHighlight {
+  color: #e65a00;
+  font-weight: bold;
+}
+
+.majorHighlight {
+  color: #feb622;
+  font-weight: bold;
+}
+
+.techHighlight {
+  color: #e65a00;
+  font-weight: bold;
+}
+
+.impactHighlight {
+  color: #feb622;
+  font-weight: bold;
 }
 
 .footer {

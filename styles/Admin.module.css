@@ -116,11 +116,11 @@
 .popup {
   background-color: white;
   border-radius: 8px;
-  width: 400px;
+  width: 600px;
   max-width: 90%;
   padding: 0;
   position: relative;
-  max-height: 80vh; /* Giới hạn chiều cao tối đa */
+  height: 80vh; /* Giới hạn chiều cao tối đa */
   overflow-y: auto; /* scroll cho nội dung dài */
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm shadow cho popup */
@@ -161,20 +161,20 @@
 }
 
 .formContainer h1 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: #fcefd4;
   margin: 0;
 }
 
 .formContainer h2 {
-  font-size: 18px;
+  font-size: 24px;
   color: #333;
   margin: 10px 0;
 }
 
 .formContainer p {
-  font-size: 14px;
+  font-size: 20px;
   color: #333;
   margin: 10px 0;
   line-height: 1.5;
@@ -309,8 +309,22 @@
   background-color: #3f99e9; 
   color: #fcefd4;
   border-radius: 20px; /* nút "Bước kế tiếp" */
+  font-size: 16px;
 }
 
 .nextButton:hover {
+  background-color: #1b1b62;
+}
+.prevButton {
+  background-color: #3f99e9;
+  color: #fcefd4;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.prevButton:hover {
   background-color: #1b1b62;
 }

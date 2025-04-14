@@ -62,7 +62,7 @@ const Player = () => {
         setTimeout(() => {
           setGameState('flipping');
           flipCardsSequentially();
-        }, 3000);
+        }, 1000);
       }
     }, 500); // Phát mỗi lá cách 0.5 giây
   };
@@ -82,22 +82,73 @@ const Player = () => {
         console.log('Updated flippedCards:', newFlipped);
         return newFlipped;
       });
-      await delay(500); // Chờ 500ms trước khi lật thẻ tiếp theo
+      await delay(500); // Chờ 500ms trước khi lật thẻ tiếp
     }
   
-    // Khi lật xong
+    // lật xong
     setGameState('flipped');
     if (cards.length === 4) {
       const timeTitle = cards[0].title;
-      let questionText = '';
-      if (timeTitle === 'Con người có thể sống trên mặt trăng') {
-        questionText = `[${timeTitle}], khi [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] như thế nào?`;
+      let questionElements = [];
+
+      if (timeTitle === 'Con người có thể sống trên Mặt trăng') {
+        questionElements = [
+          <span key="time" className={styles.timeHighlight}>{timeTitle}</span>,
+          ', khi ',
+          <span key="major" className={styles.majorHighlight}>{cards[1].title}</span>,
+          ' có sự hỗ trợ của công nghệ ',
+          <span key="tech" className={styles.techHighlight}>{cards[2].title}</span>,
+          ' sẽ ',
+          <span key="impact" className={styles.impactHighlight}>{cards[3].title}</span>,
+          ' như thế nào?',
+        ];
       } else if (timeTitle === 'Sau Thế chiến thứ 3') {
-        questionText = `[${timeTitle}], [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] ra sao?`;
+        questionElements = [
+          <span key="time" className={styles.timeHighlight}>{timeTitle}</span>,
+          ', ',
+          <span key="major" className={styles.majorHighlight}>{cards[1].title}</span>,
+          ' có sự hỗ trợ của công nghệ ',
+          <span key="tech" className={styles.techHighlight}>{cards[2].title}</span>,
+          ' sẽ ',
+          <span key="impact" className={styles.impactHighlight}>{cards[3].title}</span>,
+          ' ra sao?',
+        ];
+      } else if (cards[3].title === 'mâu thuẫn xã hội') {
+        questionElements = [
+          <span key="time" className={styles.timeHighlight}>{timeTitle}</span>,
+          ', ',
+          <span key="major" className={styles.majorHighlight}>{cards[1].title}</span>,
+          ' có sự hỗ trợ của công nghệ ',
+          <span key="tech" className={styles.techHighlight}>{cards[2].title}</span>,
+          ' sẽ ',
+          <span key="impact" className={styles.impactHighlight}>{cards[3].title}</span>,
+          ' như thế nào?',
+        ];
+      } else if (cards[3].title === 'khủng hoảng kinh tế') {
+        questionElements = [
+          <span key="time" className={styles.timeHighlight}>{timeTitle}</span>,
+          ', ',
+          <span key="major" className={styles.majorHighlight}>{cards[1].title}</span>,
+          ' có sự hỗ trợ của công nghệ ',
+          <span key="tech" className={styles.techHighlight}>{cards[2].title}</span>,
+          ' sẽ ',
+          <span key="impact" className={styles.impactHighlight}>{cards[3].title}</span>,
+          ' ra sao?',
+        ];
       } else {
-        questionText = `[${timeTitle}], [${cards[1].title}] có sự hỗ trợ của công nghệ [${cards[2].title}] sẽ [${cards[3].title}] gì?`;
+        questionElements = [
+          <span key="time" className={styles.timeHighlight}>{timeTitle}</span>,
+          ', ',
+          <span key="major" className={styles.majorHighlight}>{cards[1].title}</span>,
+          ' có sự hỗ trợ của công nghệ ',
+          <span key="tech" className={styles.techHighlight}>{cards[2].title}</span>,
+          ' sẽ ',
+          <span key="impact" className={styles.impactHighlight}>{cards[3].title}</span>,
+          ' gì?',
+        ];
       }
-      setQuestion(questionText);
+
+      setQuestion(questionElements);
     }
   };
 
@@ -112,6 +163,14 @@ const Player = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
     setCurrentOutlineIndex(0); // Reset về gợi ý đầu tiên khi đóng
+  };
+
+  const prevSuggestion = () => {
+    if (currentOutlineIndex > 0) {
+      setCurrentOutlineIndex((prev) => prev - 1);
+    } else {
+      setCurrentOutlineIndex(0); // Giữ nguyên ở gợi ý đầu 
+    }
   };
 
   // Chuyển sang gợi ý tiếp theo
@@ -233,6 +292,7 @@ const Player = () => {
           isOpen={isPopupOpen}
           onClose={closePopup}
           onNext={nextSuggestion}
+          onPrev={prevSuggestion}
           initialData={outlines[currentOutlineIndex]}
           table="outlines"
           mode="suggestion"

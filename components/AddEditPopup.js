@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Admin.module.css';
 import EmojiPicker from 'emoji-picker-react';
 
-const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mode = 'add' }) => {
+const AddEditPopup = ({ isOpen, onClose, onSave, onNext, onPrev, initialData, table, mode = 'add' }) => {
   const [formData, setFormData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -106,12 +106,12 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                 Quy trình thảo luận
               </h1>
               <button className={styles.closeButton} onClick={onClose}>
-                X
+                <b>X</b>
               </button>
             </>
           ) : (
             <>
-              <h2 style={{ margin: 0, flex: 1, textAlign: 'center' }}>
+              <h1 style={{ margin: 0, flex: 1, textAlign: 'center' }}>
                 {mode === 'edit' ? 'Sửa' : 'Thêm'}{' '}
                 {table === 'times'
                   ? 'Thời điểm'
@@ -122,9 +122,9 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
                   : table === 'impacts'
                   ? 'Tác động'
                   : 'Gợi ý'}
-              </h2>
+              </h1>
               <button className={styles.closeButton} onClick={onClose}>
-                ×
+                <b>X</b>
               </button>
             </>
           )}
@@ -134,7 +134,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
           <div className={styles.formContainer}>
             {initialData ? (
               <>
-                <h2 style={{ textAlign: 'center' }}>
+                <h2 style={{ textAlign: 'center'}}>
                   {initialData.step}. {initialData.title}
                 </h2>
                 <h2 style={{ textAlign: 'center' }}>({initialData.time})</h2>
@@ -235,9 +235,14 @@ const AddEditPopup = ({ isOpen, onClose, onSave, onNext, initialData, table, mod
 
         <div className={styles.popupButtons}>
           {mode === 'suggestion' ? (
-            <button onClick={onNext} className={styles.nextButton}>
-              Bước kế tiếp
-            </button>
+            <>
+              <button onClick={onPrev} className={styles.prevButton}>
+                Bước trước
+              </button>
+              <button onClick={onNext} className={styles.nextButton}>
+                Bước kế tiếp
+              </button>
+            </>
           ) : (
             <>
               <button onClick={handleSubmit} className={styles.saveButton}>
