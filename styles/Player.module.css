@@ -3,197 +3,240 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background-color: white;
+  background-image: url('../public/uploads/Background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #FFF5E6;
   font-family: Arial, sans-serif;
-  padding: 20px;
   position: relative;
+  width: 100vw;
+  height: 100vh;
 }
 
 .initialContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Căn giữa theo chiều dọc */
-  min-height: 100vh; /* container chiếm toàn bộ chiều cao màn hình */
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.cardSpread {
-  position: relative;
-  width: 240px;
-  height: 180px;
-  transform: translateX(58px);
-}
-
-.cardSpread .card {
+.logo {
   position: absolute;
-  width: 120px;
-  height: 180px;
-  background-color: #e65a00;
-  border: 2px solid #000;
-  border-radius: 8px;
-  background-image: url('/images/card-back.png');
-  background-size: cover;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #1B1B62;
 }
 
-.cardSpread .card:nth-child(1) { transform: translateX(-40px) rotate(-15deg); }
-.cardSpread .card:nth-child(2) { transform: translateX(-20px) rotate(-5deg); }
-.cardSpread .card:nth-child(3) { transform: translateX(20px) rotate(5deg); }
-.cardSpread .card:nth-child(4) { transform: translateX(40px) rotate(15deg); }
+.logoMain {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.logoSub {
+  font-size: 8px;
+  font-weight: normal;
+  line-height: 1;
+  margin-top: 5px;
+  background-color: #FEB622;
+  padding: 5px 10px;
+  border: 2px solid #FEB622;
+  border-radius: 15px;
+  max-width: 120px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  margin-top: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.titleFuture {
+  background-color: #1B1B62;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  padding: 10px 40px;
+  border: 3px solid white;
+  border-radius: 8px;
+  margin-bottom: -10px;
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+  transform: rotate(-1deg);
+}
+
+.titleFuture::before,
+.titleFuture::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #D3D3D3;
+  border-radius: 50%;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.titleFuture::before {
+  top: 23px;
+  left: 5px;
+}
+
+.titleFuture::after {
+  top: 23px;
+  right: 5px;
+}
+
+.titleTeller {
+  background-color: #FEB622;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  padding: 10px 40px;
+  border: 3px solid #1B1B62;
+  border-radius: 8px;
+  position: relative;
+  z-index: 2;
+  line-height: 1;
+  transform: rotate(5deg);
+}
+
+.titleTeller::before,
+.titleTeller::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #D3D3D3;
+  border-radius: 50%;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.titleTeller::before {
+  top: 20px;
+  left: 5px;
+}
+
+.titleTeller::after {
+  top: 23px;
+  right: 5px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 50px;
+  margin-top: 50px; /* Tăng khoảng cách giữa 4 ô trống và nút Chia bài */
+}
 
 .startButton {
-  background-color: #3f99e9;
-  color: #fcefd4;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 16px;
+  background-color: #1B1B62;
+  color: white;
+  border: 2px solid #1B1B62;
+  padding: 12px 70px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
   cursor: pointer;
-  margin-top: 40px;
+  line-height: 1;
 }
 
 .startButton:hover {
-  background-color: #1b1b62;
+  background-color: #FEB622;
 }
 
-.movingContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  transform: translateX(58px);
-}
-
-.cardMoving {
-  position: relative;
-  width: 240px;
-  height: 180px;
-}
-
-.cardMoving .card {
-  position: absolute;
-  width: 120px;
-  height: 180px;
-  background-color: #e65a00;
-  border: 2px solid #000;
-  border-radius: 8px;
-  background-image: url('/images/card-back.png');
-  background-size: cover;
-  animation: moveToCenter 1s forwards;
-}
-
-.cardMoving .card:nth-child(1) { animation-delay: 0s; }
-.cardMoving .card:nth-child(2) { animation-delay: 0.1s; }
-.cardMoving .card:nth-child(3) { animation-delay: 0.2s; }
-.cardMoving .card:nth-child(4) { animation-delay: 0.3s; }
-
-@keyframes moveToCenter {
-  0% { transform: translateX(-40px) rotate(-15deg); }
-  100% { transform: translateX(0) rotate(0deg); }
-}
-
-.shuffleContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.cardShuffle {
-  position: relative;
-  width: 160px;
-  height: 300px;
-}
-
-.cardShuffle .card {
-  position: absolute;
-  width: 120px;
-  height: 180px;
-  background-color: #e65a00;
-  border: 2px solid #000;
-  border-radius: 8px;
-  background-image: url('/images/card-back.png');
-  background-size: cover;
-  animation: shuffle 1s infinite;
-}
-
-.cardShuffle .card:nth-child(1) { animation-delay: 0s; }
-.cardShuffle .card:nth-child(2) { animation-delay: 0.2s; }
-.cardShuffle .card:nth-child(3) { animation-delay: 0.4s; }
-.cardShuffle .card:nth-child(4) { animation-delay: 0.6s; }
-
-@keyframes shuffle {
-  0% { transform: translateX(-60px) rotate(-10deg); }
-  50% { transform: translateX(60px) rotate(10deg); }
-  100% { transform: translateX(-60px) rotate(-10deg); }
-}
-
-.cardStack {
-  position: fixed;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 180px;
+.howToPlayButton {
+  background-color: white;
+  color: #1B1B62;
+  border: 2px solid #1B1B62;
+  padding: 12px 70px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
   cursor: pointer;
+  line-height: 1;
 }
 
-.cardStack .card {
+.howToPlayButton:hover {
+  background-color: #f0f0f0;
+}
+
+.footerText {
   position: absolute;
-  width: 120px;
-  height: 180px;
-  background-color: #e65a00;
-  border: 2px solid #000;
-  border-radius: 8px;
-  background-image: url('/images/card-back.png');
-  background-size: cover;
+  bottom: 50px;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  line-height: 1;
 }
-
-.cardStack .card:nth-child(1) { transform: translateX(-2px) translateY(-2px); }
-.cardStack .card:nth-child(2) { transform: translateX(0) translateY(0); }
-.cardStack .card:nth-child(3) { transform: translateX(2px) translateY(2px); }
-.cardStack .card:nth-child(4) { transform: translateX(4px) translateY(4px); }
 
 .cardsWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px; 
-}
-
-.dealContainer {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
   margin-top: 50px;
-}
-
-.cardDeal {
-  width: 120px;
-  height: 180px;
-  animation: dealFromBottom 0.5s forwards;
-}
-
-/* Định vị các lá bài từ trái -> phải */
-.cardPosition0 { transform: translateX(-180px); }
-.cardPosition1 { transform: translateX(-60px); }
-.cardPosition2 { transform: translateX(60px); }
-.cardPosition3 { transform: translateX(180px); }
-
-@keyframes dealFromBottom {
-  0% {
-    transform: translateY(calc(100vh - 230px)) scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
 }
 
 .cardsContainer {
   display: flex;
   justify-content: center;
   gap: 40px;
+  transition: transform 0.5s ease; /* Hiệu ứng dịch chuyển*/
+}
+
+.cardsShiftDown {
+  transform: translateY(35px); /* Dịch xuống 50px khi câu hỏi xuất hiện */
+}
+
+.emptySlot {
+  width: 160px;
+  height: 300px;
+  border: 2px dashed #A3CFFA;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cardSlot {
+  width: 160px;
+  height: 300px;
+  position: relative;
+}
+
+.cardDeal {
+  width: 160px;
+  height: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: dealFromBottom 0.5s forwards;
+}
+
+@keyframes dealFromBottom {
+  0% {
+    transform: translateY(calc(100vh - 350px)) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .card {
@@ -246,55 +289,240 @@
 }
 
 .questionContainer {
-  margin-top: 20px; /* khoảng cách lá bài*/
+  margin-bottom: 5px;
+  background-color: #FFF5E6;
+  border: 2px solid #1B1B62;
+  border-radius: 15px;
+  padding: 15px 30px;
+  max-width: 80%;
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards; /* Hiệu ứng fade-in cho câu hỏi */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .question {
-  font-size: 30px;
-  color: #1b1b62;
+  font-size: 24px;
+  color: black;
   text-align: center;
+  margin: 0;
 }
 
 .timeHighlight {
-  color: #e65a00;
+  color: black;
   font-weight: bold;
 }
 
 .majorHighlight {
-  color: #feb622;
+  color: black;
   font-weight: bold;
 }
 
 .techHighlight {
-  color: #e65a00;
+  color: black;
   font-weight: bold;
 }
 
 .impactHighlight {
-  color: #feb622;
+  color: black;
   font-weight: bold;
 }
 
 .footer {
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
   display: flex;
-  justify-content: flex-end;
-  padding: 0 20px;
+  flex-direction: column; /* Sắp xếp dọc */
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.dealButton {
+  background-color: #1B1B62;
+  color: white;
+  border: none;
+  padding: 12px 70px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+}
+
+.dealButton:hover {
+  background-color: #FEB622;
 }
 
 .suggestionButton {
-  background-color: #3f99e9;
-  color: #fcefd4;
+  background-color: #1B1B62;
+  color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
 }
 
 .suggestionButton:hover {
-  background-color: #1b1b62;
+  background-color: #FEB622;
+}
+
+.resetButton {
+  margin-top: 50px;
+  background-color: white;
+  color: #1B1B62;
+  border: 2px solid #1B1B62;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  background-color: #f0f0f0;
+}
+
+.helpButton {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #1B1B62;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.helpButton:hover {
+  background-color: #FEB622;
+}
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popupWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.popup {
+  background-color: #FFF5E6;
+  border: 2px solid #1B1B62;
+  border-radius: 8px;
+  width: 700px;
+  max-width: 90%;
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.popupHeader {
+  color: #1B1B62;
+  padding: 15px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: 40px;
+  font-weight: bold;
+  user-select: none;
+  text-align: center;
+}
+
+.popupContent {
+  padding: 15px;
+  font-size: 18px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.popupContent h3 {
+  color: #1B1B62;
+  font-size: 16px;
+  margin-top: 0;
+}
+
+.closeButton {
+  position: absolute;
+  top: -12px;
+  right: 55px;
+  background: #1B1B62;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeButton:hover {
+  background-color: #FEB622;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  border-top: 1px solid #1B1B62; 
+}
+
+.nextButton {
+  background-color: #1B1B62;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.nextButton:hover {
+  background-color: #FEB622;
+}
+
+.prevButton {
+  background-color: white;
+  color: #1B1B62;
+  border: 2px solid #1B1B62;
+  padding: 8px 10px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.prevButton:hover {
+  background-color: #FEB622;
 }

@@ -82,7 +82,7 @@
 
 .editButton {
   background-color: #feb622;
-  color: #1b1b62;
+  color: #1b1b62; 
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -99,7 +99,6 @@
   cursor: pointer;
 }
 
-/* CSS cho pop*/
 .popupOverlay {
   position: fixed;
   top: 0;
@@ -113,24 +112,27 @@
   z-index: 1000;
 }
 
+.popupWrapper {
+  position: relative; /* Để định vị nút Close */
+  display: inline-block;
+}
+
 .popup {
   background-color: white;
   border-radius: 8px;
   width: 600px;
   max-width: 90%;
   padding: 0;
-  position: relative;
   height: 80vh; /* Giới hạn chiều cao tối đa */
-  overflow-y: auto; /* scroll cho nội dung dài */
+  overflow-y: auto; /* Scroll cho nội dung dài */
   font-family: Arial, sans-serif;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm shadow cho popup */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
 }
 
 .popupHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #3f99e9; /* Đồng bộ màu với các nút */
+  background-color: #3f99e9;
   color: #fcefd4;
   padding: 10px 15px;
   border-top-left-radius: 8px;
@@ -138,71 +140,34 @@
   font-size: 16px;
   font-weight: 500;
   user-select: none;
-}
-
-.popupHeader h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  text-align: center; 
-  flex: 1; /* tiêu đề chiếm toàn bộ không gian giữa */
+  text-align: center;
 }
 
 .closeButton {
-  background: none;
+  position: absolute;
+  top: -10px; /* Đặt bên ngoài popup, góc phải trên */
+  right: 50px;
+  background: #e65a00;
   border: none;
-  font-size: 20px;
-  color: #fcefd4; 
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  color: #fcefd4;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeButton:hover {
+  background-color: #d94800;
 }
 
 .formContainer {
   padding: 15px;
-}
-
-.formContainer h1 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #fcefd4;
-  margin: 0;
-}
-
-.formContainer h2 {
-  font-size: 24px;
-  color: #333;
-  margin: 10px 0;
-}
-
-.formContainer p {
-  font-size: 20px;
-  color: #333;
-  margin: 10px 0;
-  line-height: 1.5;
-}
-
-.formGroup {
-  margin-bottom: 10px;
-}
-
-.formGroup .emoji {
-  font-size: 24px;
-  text-align: center;
-}
-
-.formGroup h3 {
-  font-family: Arial, sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin: 0 0 10px 0;
-}
-
-.formGroup p {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  color: #333;
-  margin: 0 0 10px 0;
-  line-height: 1.5;
+  flex: 1; 
+  overflow-y: auto; /* Scroll nếu nội dung dài */
 }
 
 .formLabel {
@@ -220,17 +185,19 @@
   border-radius: 4px;
   font-size: 14px;
   box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .formTextarea {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
-  border-radius: 4px; 
+  border-radius: 4px;
   font-size: 14px;
   min-height: 80px;
   resize: vertical;
   box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .emojiDisplay {
@@ -242,7 +209,7 @@
 .emojiButton {
   background: none;
   border: none;
-  color: #3f99e9; 
+  color: #3f99e9;
   font-size: 14px;
   cursor: pointer;
   padding: 0;
@@ -263,7 +230,7 @@
   width: 100px;
   height: 100px;
   margin-top: 10px;
-  border-radius: 4px; /* Đồng bộ border-radius */
+  border-radius: 4px;
 }
 
 .popupButtons {
@@ -272,59 +239,35 @@
   gap: 10px;
   padding: 10px 15px;
   border-top: 1px solid #ddd;
-  background: #f9f9f9; 
+  background: #f9f9f9;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
 
-.saveButton,
-.cancelButton,
-.nextButton {
+.saveButton {
+  background-color: #3f99e9;
+  color: white;
   padding: 8px 16px;
   border: none;
-  border-radius: 4px; /* Đồng bộ border-radius */
+  border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
 }
 
-.saveButton {
-  background-color: #3f99e9; 
-  color: white;
-}
-
 .saveButton:hover {
-  background-color: #1b1b62; 
+  background-color: #1b1b62;
 }
 
 .cancelButton {
-  background-color: #feb622; 
+  background-color: #feb622;
   color: white;
-}
-
-.cancelButton:hover {
-  background-color: #e65a00; 
-}
-
-.nextButton {
-  background-color: #3f99e9; 
-  color: #fcefd4;
-  border-radius: 20px; /* nút "Bước kế tiếp" */
-  font-size: 16px;
-}
-
-.nextButton:hover {
-  background-color: #1b1b62;
-}
-.prevButton {
-  background-color: #3f99e9;
-  color: #fcefd4;
+  padding: 8px 16px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 16px;
+  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.prevButton:hover {
-  background-color: #1b1b62;
+.cancelButton:hover {
+  background-color: #e65a00;
 }

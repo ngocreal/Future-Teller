@@ -2,12 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/api/player": "pages/api/player.js",
   "/player": "pages/player.js",
   "/admin": "pages/admin.js",
-  "/": "pages/index.js",
   "/api/times": "pages/api/times.js",
-  "/api/majors": "pages/api/majors.js",
-  "/api/technologies": "pages/api/technologies.js",
-  "/api/impacts": "pages/api/impacts.js",
-  "/api/outlines": "pages/api/outlines.js"
+  "/api/outlines": "pages/api/outlines.js",
+  "/api/technologies": "pages/api/technologies.js"
 }
