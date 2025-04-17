@@ -10,6 +10,24 @@
   margin-bottom: 20px;
 }
 
+.headerButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.profileButton {
+  background-color: #3f99e9;
+  color: #fcefd4;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profileButton:hover {
+  background-color: #1b1b62;
+}
+
 .logoutButton {
   background-color: #007bff;
   color: #fcefd4;
@@ -17,6 +35,10 @@
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.logoutButton:hover {
+  background-color: #0056b3;
 }
 
 .tabs {
@@ -59,6 +81,10 @@
   cursor: pointer;
 }
 
+.addButton:hover {
+  background-color: #1b1b62;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -90,6 +116,10 @@
   margin-right: 5px;
 }
 
+.editButton:hover {
+  background-color: #e5a51e;
+}
+
 .deleteButton {
   background-color: #e65a00;
   color: #1b1b62;
@@ -97,6 +127,10 @@
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #d94800;
 }
 
 .popupOverlay {
@@ -113,7 +147,7 @@
 }
 
 .popupWrapper {
-  position: relative; /* Để định vị nút Close */
+  position: relative;
   display: inline-block;
 }
 
@@ -123,8 +157,8 @@
   width: 600px;
   max-width: 90%;
   padding: 0;
-  height: 80vh; /* Giới hạn chiều cao tối đa */
-  overflow-y: auto; /* Scroll cho nội dung dài */
+  height: 80vh;
+  overflow-y: auto;
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -145,7 +179,7 @@
 
 .closeButton {
   position: absolute;
-  top: -10px; /* Đặt bên ngoài popup, góc phải trên */
+  top: -10px;
   right: 50px;
   background: #e65a00;
   border: none;
@@ -166,8 +200,8 @@
 
 .formContainer {
   padding: 15px;
-  flex: 1; 
-  overflow-y: auto; /* Scroll nếu nội dung dài */
+  flex: 1;
+  overflow-y: auto;
 }
 
 .formLabel {

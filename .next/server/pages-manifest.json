@@ -3,6 +3,10 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/login": "pages/login.js",
+  "/": "pages/index.js",
   "/admin": "pages/admin.js",
-  "/player": "pages/player.js"
+  "/api/player": "pages/api/player.js",
+  "/api/login": "pages/api/login.js",
+  "/api/users": "pages/api/users.js",
+  "/api/times": "pages/api/times.js"
 }

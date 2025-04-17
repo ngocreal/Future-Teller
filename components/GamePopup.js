@@ -1,12 +1,25 @@
 import styles from '../styles/Player.module.css';
 
-const GamePopup = ({ isOpen, onClose, title, content, showNavigation = false, onNext, onPrev, step }) => {
+const GamePopup = ({
+  isOpen,
+  onClose,
+  title,
+  content,
+  showNavigation = false,
+  onNext,
+  onPrev,
+  step,
+  popupWidth,
+  popupHeight,
+  onIncreaseSize,
+  onDecreaseSize
+}) => {
   if (!isOpen) return null;
 
   return (
     <div className={styles.popupOverlay}>
       <div className={styles.popupWrapper}>
-        <div className={styles.popup}>
+        <div className={styles.popup} style={{ width: `${popupWidth}px`, maxHeight: `${popupHeight}vh` }}>
           <div className={styles.popupHeader}>
             {title}
           </div>
@@ -14,7 +27,7 @@ const GamePopup = ({ isOpen, onClose, title, content, showNavigation = false, on
             {content}
           </div>
           {showNavigation && (
-            <div className={styles.buttonContainer}>
+            <div className={styles.suggestionButtonContainer}>
               {step > 1 && (
                 <button className={styles.prevButton} onClick={onPrev}>
                   Bước trước
@@ -25,6 +38,14 @@ const GamePopup = ({ isOpen, onClose, title, content, showNavigation = false, on
               </button>
             </div>
           )}
+          <div className={styles.sizeControlContainer}>
+            <button className={styles.sizeButton} onClick={onIncreaseSize}>
+              +
+            </button>
+            <button className={styles.sizeButton} onClick={onDecreaseSize}>
+              -
+            </button>
+          </div>
         </div>
         <button className={styles.closeButton} onClick={onClose}>
           <b>X</b>

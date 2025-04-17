@@ -1,91 +1,106 @@
-/* styles/Login.module.css */
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f5f7fa;
-  }
-  .card {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    padding: 6rem;
-    width: 100%;
-    max-width: 380px;
-    text-align: center;
-  }
-  .icon {
-    font-size: 3rem;
-    color: #1b1b62;
-    margin-bottom: 0.5rem;
-  }
-  .title {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    color: #1b1b62;
-  }
-  .formGroup {
-    position: relative;
-    margin-bottom: 1rem;
-  }
-  .inputIcon {
-    position: absolute;
-    top: 50%;
-    left: 0.75rem;
-    transform: translateY(-50%);
-    color: #444;
-  }
-  .input {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2rem;
-    border: 2px solid #e2e6ef;
-    border-radius: 8px;
-    font-size: 1rem;
-    outline: none;
-  }
-  .input:focus {
-    border-color: #1b1b62;
-  }
-  .btnPrimary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0.75rem;
-    background: #1b1b62;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    margin-bottom: 0.75rem;
-  }
-  .btnPrimary svg {
-    margin-right: 0.5rem;
-  }
-  .btnOutline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0.75rem;
-    background: transparent;
-    border: 2px solid #1b1b62;
-    border-radius: 8px;
-    color: #1b1b62;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .btnOutline svg {
-    margin-right: 0.5rem;
-  }
-  .error {
-    color: #d9534f;
-    margin-top: 0.5rem;
-    font-size: 2rem;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  padding: 6rem;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.icon {
+  font-size: 3rem;
+  color: #1b1b62;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1b1b62;
+}
+
+.formGroup {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.inputIcon {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #444;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2rem;
+  border: 2px solid #e2e6ef;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box; 
+}
+
+.input:focus {
+  border-color: #1b1b62;
+}
+
+.btnPrimary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem 1rem; 
+  background: #1b1b62;
+  border: 2px solid #1b1b62; 
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-sizing: border-box; 
+}
+
+.btnPrimary svg {
+  margin-right: 0.5rem;
+}
+
+.btnPrimary:hover {
+  background: #2a2a8e; 
+}
+
+.btnOutline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: 2px solid #1b1b62;
+  border-radius: 8px;
+  color: #1b1b62;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btnOutline svg {
+  margin-right: 0.5rem;
+}
+
+.error {
+  color: #d9534f;
+  margin-top: 0.5rem;
+  font-size: 2rem;
+}

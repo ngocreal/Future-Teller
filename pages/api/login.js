@@ -1,4 +1,3 @@
-// pages/api/login.js
 import db from '../../lib/db';
 import bcrypt from 'bcryptjs';
 
@@ -20,7 +19,6 @@ export default async function handler(req, res) {
     console.log('    → DB rows:', rows);
 
     if (rows.length === 0) {
-      // không tìm thấy user
       return res
         .status(401)
         .json({ success: false, message: 'Sai username hoặc password', reason: 'no_user' });
@@ -34,17 +32,16 @@ export default async function handler(req, res) {
     console.log('    → Password match?', isMatch);
 
     if (!isMatch) {
-      // sai mk
       return res
         .status(401)
         .json({ success: false, message: 'Sai username hoặc password', reason: 'bad_password' });
     }
 
     // Thành công
-    console.log('Login successful for', username);
+    console.log('Login successful for', username); 
     return res.status(200).json({ success: true, message: 'Đăng nhập thành công' });
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('Login error:', err); 
     return res.status(500).json({ success: false, message: 'Lỗi server' });
   }
 }

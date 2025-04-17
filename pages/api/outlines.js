@@ -44,7 +44,9 @@ export default async function handler(req, res) {
               const name = nameMatch[1];
               const valueMatch = part.split('\r\n\r\n')[1];
               if (valueMatch) {
-                const value = valueMatch.split('\r\n')[0];
+                // Lấy toàn bộ giá trị từ sau \r\n\r\n đến trước \r\n--, giữ nguyên các xuống dòng
+                const endIndex = valueMatch.lastIndexOf('\r\n--');
+                const value = endIndex !== -1 ? valueMatch.substring(0, endIndex).trim() : valueMatch.trim();
                 formDataPost[name] = value;
               }
             }
@@ -94,7 +96,9 @@ export default async function handler(req, res) {
               const name = nameMatch[1];
               const valueMatch = part.split('\r\n\r\n')[1];
               if (valueMatch) {
-                const value = valueMatch.split('\r\n')[0];
+                // Lấy toàn bộ giá trị từ sau \r\n\r\n đến trước \r\n--, giữ nguyên các xuống dòng
+                const endIndex = valueMatch.lastIndexOf('\r\n--');
+                const value = endIndex !== -1 ? valueMatch.substring(0, endIndex).trim() : valueMatch.trim();
                 formDataPut[name] = value;
               }
             }

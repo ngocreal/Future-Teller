@@ -202,7 +202,7 @@
 }
 
 .cardsShiftDown {
-  transform: translateY(35px); /* Dịch xuống 50px khi câu hỏi xuất hiện */
+  transform: translateY(35px); /* Dịch xuống khi câu hỏi xuất hiện */
 }
 
 .emptySlot {
@@ -413,6 +413,28 @@
   background-color: #FEB622;
 }
 
+.settingsButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #1B1B62;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.settingsButton:hover {
+  background-color: #FEB622;
+}
+
 .popupOverlay {
   position: fixed;
   top: 0;
@@ -435,15 +457,14 @@
   background-color: #FFF5E6;
   border: 2px solid #1B1B62;
   border-radius: 8px;
-  width: 700px;
-  max-width: 90%;
+  max-width: 90%; /* không vượt quá 90% màn hình */
   padding: 0;
-  max-height: 70vh;
   overflow-y: auto;
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
+  transition: width 0.3s ease, max-height 0.3s ease; /* Hiệu ứng mượt khi thay đổi kích thước */
 }
 
 .popupHeader {
@@ -493,10 +514,10 @@
 
 .buttonContainer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   gap: 15px;
-  padding: 15px;
-  border-top: 1px solid #1B1B62; 
+  margin-bottom: 50px;
+  margin-top: 50px; /* Tăng khoảng cách giữa 4 ô trống và nút Chia bài */
 }
 
 .nextButton {
@@ -524,5 +545,56 @@
 }
 
 .prevButton:hover {
+  background-color: #FEB622;
+}
+
+.suggestionButtonContainer {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 15px;
+  padding: 15px;
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  border-top: 1px solid #1B1B62;
+}
+
+/* nút "Bước kế tiếp"  */
+.suggestionButtonContainer .nextButton {
+  padding: 12px 50px; 
+  font-size: 18px; 
+  font-weight: bold; 
+}
+
+/*nút "Bước trước" */
+.suggestionButtonContainer .prevButton {
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+/* nút phóng to/thu nhỏ */
+.sizeControlContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+/* Nút phóng to/thu nhỏ */
+.sizeButton {
+  background-color: #1B1B62;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sizeButton:hover {
   background-color: #FEB622;
 }
