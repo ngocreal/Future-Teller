@@ -177,7 +177,7 @@
   background-color: #f0f0f0;
 }
 
-.footerText {
+/* .footerText {
   position: absolute;
   bottom: 50px;
   color: #666;
@@ -185,7 +185,7 @@
   text-align: center;
   width: 100%;
   line-height: 1;
-}
+} */
 
 .cardsWrapper {
   display: flex;
