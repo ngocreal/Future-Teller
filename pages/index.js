@@ -1,3 +1,4 @@
+require('dotenv').config();
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { FaWrench } from 'react-icons/fa';
