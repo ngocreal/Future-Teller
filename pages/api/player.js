@@ -14,13 +14,7 @@ export default async function handler(req, res) {
     console.log('Technologies:', technologies);
     console.log('Impacts:', impacts);
 
-    res.status(200).json({
-      times,
-      majors,
-      technologies,
-      impacts,
-      outlines,
-    });
+    res.status(200).json({ times, majors, technologies, impacts, outlines,});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,19 +1,6 @@
 import styles from '../styles/Player.module.css';
 
-const GamePopup = ({
-  isOpen,
-  onClose,
-  title,
-  content,
-  showNavigation = false,
-  onNext,
-  onPrev,
-  step,
-  popupWidth,
-  popupHeight,
-  onIncreaseSize,
-  onDecreaseSize
-}) => {
+const GamePopup = ({isOpen, onClose, title, content, showNavigation = false, onNext, onPrev, step, popupWidth, popupHeight, onIncreaseSize, onDecreaseSize}) => {
   if (!isOpen) return null;
 
   return (

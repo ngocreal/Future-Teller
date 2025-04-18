@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router'; // Thêm useRouter
-import { FaWrench } from 'react-icons/fa'; // Thêm icon cờ lê
+import { useRouter } from 'next/router';
+import { FaWrench } from 'react-icons/fa';
 import styles from '../styles/Player.module.css';
 import GamePopup from '../components/GamePopup';
 
 const Player = () => {
-  const router = useRouter(); // Khởi tạo router
-  const [gameState, setGameState] = useState('initial'); // (initial, emptySlots, dealing, dealt, flipping, flipped)
-  const [cards, setCards] = useState([]); // list 4 lá bài
-  const [question, setQuestion] = useState(''); // ques ghép
-  const [outlines, setOutlines] = useState([]); // db outlines
-  const [currentOutlineIndex, setCurrentOutlineIndex] = useState(0); // Chỉ số gợi ý hiện tại
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // Popup gợi ý
-  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false); // Popup cách chơi
-  const [flippedCards, setFlippedCards] = useState([false, false, false, false]); // tt lật bài
-  const [showStartButton, setShowStartButton] = useState(true); // tt nút bắt đầu
-  const [dealtCards, setDealtCards] = useState([]); // list lá bài đã được phát
-  const [showQuestion, setShowQuestion] = useState(false); // Kiểm soát hiển thị câu hỏi
-  const [popupWidth, setPopupWidth] = useState(500); // Chiều rộng popup (px)
-  const [popupHeight, setPopupHeight] = useState(50); // Chiều cao popup (vh)
+  const router = useRouter();//khởi tạo
+  const [gameState, setGameState] = useState('initial');// (initial, emptySlots, dealing, dealt, flipping, flipped)
+  const [cards, setCards] = useState([]);//list 4 lá
+  const [question, setQuestion] = useState('');//ghép ques
+  const [outlines, setOutlines] = useState([]);//db
+  const [currentOutlineIndex, setCurrentOutlineIndex] = useState(0);//chỉ số oulines hiện tại
+  const [isPopupOpen, setIsPopupOpen] = useState(false);//pop
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);//pop 
+  const [flippedCards, setFlippedCards] = useState([false, false, false, false]);//tt lật
+  const [showStartButton, setShowStartButton] = useState(true);//tt nút start
+  const [dealtCards, setDealtCards] = useState([]);//list lá đã phát
+  const [showQuestion, setShowQuestion] = useState(false);//kiểm soát hiển thị ques
+  const [popupWidth, setPopupWidth] = useState(500);//kth pop
+  const [popupHeight, setPopupHeight] = useState(50);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,56 +40,55 @@ const Player = () => {
     };
     fetchData();
   }, []);
-
-  // Hàm tăng kích thước popup
+//tăng kth pop
   const increasePopupSize = () => {
-    setPopupWidth((prev) => Math.min(prev + 50, 1000)); // Tăng chiều rộng, tối đa 1000px
-    setPopupHeight((prev) => Math.min(prev + 10, 90)); // Tăng chiều cao, tối đa 90vh
+    setPopupWidth((prev) => Math.min(prev + 50, 1000));
+    setPopupHeight((prev) => Math.min(prev + 10, 90));
   };
-
-  // Hàm giảm kích thước popup
+//giảm kth pop
   const decreasePopupSize = () => {
-    setPopupWidth((prev) => Math.max(prev - 50, 300)); // Giảm chiều rộng, tối thiểu 300px
-    setPopupHeight((prev) => Math.max(prev - 10, 30)); // Giảm chiều cao, tối thiểu 30vh
+    setPopupWidth((prev) => Math.max(prev - 50, 300));
+    setPopupHeight((prev) => Math.max(prev - 10, 30));
   };
 
-  // Hàm chuyển hướng đến trang login
   const goToLogin = () => {
     router.push('/login');
   };
-
+//4 ô trống
   const startGame = () => {
-    setShowStartButton(false); // Ẩn nút bắt đầu
-    setGameState('emptySlots'); // Chuyển sang trạng thái hiển thị 4 ô trống
+    setShowStartButton(false);
+    setGameState('emptySlots');
   };
-
-  // Phát từ trái sang phải
+// Phát từ trái sang phải
   const dealCards = () => {
     setGameState('dealing');
+    console.log('Mảng cards:', cards);
     let index = 0;
     const interval = setInterval(() => {
-      setDealtCards((prev) => [...prev, { ...cards[index], position: index }]);
+      setDealtCards((prev) => {
+        const newCard = { ...cards[index], position: index + 1 };
+        console.log('Phát lá bài:', newCard, 'Position:', newCard.position);
+        return [...prev, newCard];
+      });
       index++;
       if (index === 4) {
         clearInterval(interval);
         setGameState('dealt');
-        // Tự động lật sau 3s
         setTimeout(() => {
+          console.log('dealtCards sau khi phát:', dealtCards);
           setGameState('flipping');
           flipCardsSequentially();
         }, 3000);
       }
-    }, 500); // mỗi lá cách 0.5 giây
+    }, 500);
   };
-
-  // Reset về trạng thái 4 ô trống
+// Reset về tt 4 ô trống
   const resetGame = () => {
     setGameState('emptySlots');
     setDealtCards([]);
     setFlippedCards([false, false, false, false]);
     setQuestion('');
     setShowQuestion(false);
-    // Lấy lại dữ liệu mới từ API
     const fetchData = async () => {
       const res = await fetch('/api/player');
       const data = await res.json();
@@ -109,25 +108,21 @@ const Player = () => {
     };
     fetchData();
   };
-
-  // Lật bài lần lượt
+//lần lượt lật
   const flipCardsSequentially = async () => {
-    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-  
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     for (let index = 0; index < 4; index++) {
       setFlippedCards((prev) => {
         const newFlipped = [...prev];
         newFlipped[index] = true;
         return newFlipped;
       });
-      await delay(500); // Chờ 500ms trước khi lật thẻ tiếp
+      await delay(500);
     }
-  
     setGameState('flipped');
     if (cards.length === 4) {
       const timeTitle = cards[0].title;
       let questionElements = [];
-
       if (timeTitle === 'Con người có thể sống trên Mặt trăng') {
         questionElements = [
           <span key="time" className={styles.timeHighlight}>{timeTitle}</span>,
@@ -184,31 +179,26 @@ const Player = () => {
           ' gì?',
         ];
       }
-
       setQuestion(questionElements);
-      setShowQuestion(true); // Kích hoạt hiệu ứng hiển thị câu hỏi
+      setShowQuestion(true);
     }
   };
-
-  // Mở popup gợi ý
+//mở pop
   const openSuggestion = () => {
     if (outlines.length > 0) {
       setIsPopupOpen(true);
     }
   };
 
-  // Đóng pop
   const closePopup = () => {
     setIsPopupOpen(false);
-    setCurrentOutlineIndex(0); // Reset về gợi ý đầu tiên khi đóng
+    setCurrentOutlineIndex(0);
   };
 
-  // Mở pop cách chơi
   const openHowToPlay = () => {
     setIsHowToPlayOpen(true);
   };
 
-  // Đóng 
   const closeHowToPlay = () => {
     setIsHowToPlayOpen(false);
   };
@@ -217,7 +207,7 @@ const Player = () => {
     if (currentOutlineIndex > 0) {
       setCurrentOutlineIndex((prev) => prev - 1);
     } else {
-      setCurrentOutlineIndex(0); // Giữ nguyên ở gợi ý đầu 
+      setCurrentOutlineIndex(0);
     }
   };
 
@@ -225,8 +215,8 @@ const Player = () => {
     if (currentOutlineIndex + 1 < outlines.length) {
       setCurrentOutlineIndex((prev) => prev + 1);
     } else {
-      setIsPopupOpen(false); // Đóng pop khi hết
-      setCurrentOutlineIndex(0); // Reset về bước đầu
+      setIsPopupOpen(false);
+      setCurrentOutlineIndex(0);
     }
   };
 
@@ -298,7 +288,6 @@ const Player = () => {
         </div>
       )}
 
-      {/* Hiển thị 4 ô trống với nút */}
       {gameState === 'emptySlots' && (
         <div className={styles.cardsWrapper}>
           <div className={styles.cardsContainer}>
@@ -314,20 +303,20 @@ const Player = () => {
         </div>
       )}
 
-      {/* Animation phát bài */}
       {gameState === 'dealing' && (
         <div className={styles.cardsWrapper}>
           <div className={styles.cardsContainer}>
             {[...Array(4)].map((_, index) => {
-              const card = dealtCards.find(c => c.position === index);
+              const card = dealtCards[index]; // Lấy trực tiếp theo thứ tự thêm vào
               return (
-                <div key={index} className={styles.cardSlot}>
+                <div key={index} className={styles.cardSlot} data-position={index + 1}>
                   {card ? (
-                    <div className={`${styles.cardDeal} ${styles[`cardPosition${card.position}`]}`}>
+                    <div className={styles.cardDeal}>
                       <div className={styles.cardInner}>
                         <div className={styles.cardBack}></div>
                         <div className={styles.cardFront}>
                           <img src={card.image} alt={card.type} />
+                          <span className={styles.debugLabel}>{card.type}</span> {/* Debug */}
                         </div>
                       </div>
                     </div>
@@ -341,7 +330,6 @@ const Player = () => {
         </div>
       )}
 
-      {/* Lật bài */}
       {(gameState === 'dealt' || gameState === 'flipping' || gameState === 'flipped') && (
         <div className={styles.cardsWrapper}>
           {showQuestion && question && (
@@ -351,12 +339,13 @@ const Player = () => {
           )}
           <div className={`${styles.cardsContainer} ${showQuestion ? styles.cardsShiftDown : ''}`}>
             {cards.map((card, index) => (
-              <div key={index} className={styles.cardSlot}>
+              <div key={index} className={styles.cardSlot} data-position={index + 1}>
                 <div className={`${styles.card} ${flippedCards[index] ? styles.flipped : ''}`}>
                   <div className={styles.cardInner}>
                     <div className={styles.cardBack}></div>
                     <div className={styles.cardFront}>
                       <img src={card.image} alt={card.type} />
+                      {/* <span className={styles.debugLabel}>{card.type}</span> */}
                     </div>
                   </div>
                 </div>
@@ -382,7 +371,6 @@ const Player = () => {
         </button>
       )}
 
-      {/* setting*/}
       <button className={styles.settingsButton} onClick={goToLogin}>
         <FaWrench />
       </button>
@@ -402,7 +390,6 @@ const Player = () => {
         onDecreaseSize={decreasePopupSize}
       />
 
-      {/* Popup cách chơi */}
       <GamePopup
         isOpen={isHowToPlayOpen}
         onClose={closeHowToPlay}

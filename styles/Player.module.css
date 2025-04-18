@@ -598,3 +598,66 @@
 .sizeButton:hover {
   background-color: #FEB622;
 }
+/* Thêm vào cuối file Player.module.css */
+
+/* Đảm bảo cardsContainer căn giữa và không đảo thứ tự */
+.cardsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  transition: transform 0.5s ease;
+}
+
+/* Đảm bảo cardSlot cố định kích thước */
+.cardSlot {
+  width: 160px;
+  height: 300px;
+  position: relative;
+}
+
+/* Style chung cho cardDeal */
+.cardDeal {
+  width: 160px;
+  height: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Các class cardPosition để tùy chỉnh hiệu ứng phát bài */
+.cardPosition1 {
+  animation: dealFromBottom 0.5s forwards;
+}
+.cardPosition2 {
+  animation: dealFromBottom 0.5s forwards 0.5s; /* Trễ 0.5s */
+}
+.cardPosition3 {
+  animation: dealFromBottom 0.5s forwards 1s; /* Trễ 1s */
+}
+.cardPosition4 {
+  animation: dealFromBottom 0.5s forwards 1.5s; /* Trễ 1.5s */
+}
+
+/* Animation phát bài từ dưới lên */
+@keyframes dealFromBottom {
+  0% {
+    transform: translateY(calc(100vh - 350px)) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Debug label để kiểm tra */
+.debugLabel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+  z-index: 10;
+}

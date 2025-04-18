@@ -150,18 +150,12 @@ const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
                   onChange={handleChange}
                   className={styles.formTextarea}
                 />
-                <label className={styles.formLabel}>Emoji:</label>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span className={styles.emojiDisplay}>
-                    {formData.emoji || '😊'}
-                  </span>
-                  <button
+                <label className={styles.formLabel}>Chọn Emoji: <button
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                     className={styles.emojiButton}
                   >
-                    Chọn Emoji
-                  </button>
-                </div>
+                    {formData.emoji || '😊'}
+                  </button></label>
                 {showEmojiPicker && (
                   <div className={styles.emojiPicker}>
                     <EmojiPicker onEmojiClick={handleEmojiClick} />

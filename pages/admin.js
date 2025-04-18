@@ -5,6 +5,7 @@ import AddEditPopup from '../components/AddEditPopup';
 import styles from '../styles/Admin.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaUser, FaSignOutAlt, FaPlus, FaQrcode } from 'react-icons/fa';
 
 export default function Admin() {
   const router = useRouter();
@@ -163,19 +164,19 @@ export default function Admin() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     toast.success('Đăng xuất thành công');
-    router.push('/login');
+    router.push('/');
   };
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <span>Xin chào, {userData?.username || 'Admin'}</span>
+        <h1>Xin chào, {userData?.username || 'Admin'}</h1>
         <div className={styles.headerButtons}>
           <button className={styles.profileButton} onClick={() => setIsProfilePopupOpen(true)}>
-            Hồ sơ
+          <FaUser className={styles.buttonIcon} />Hồ sơ
           </button>
           <button className={styles.logoutButton} onClick={handleLogout}>
-            Đăng xuất
+          <FaSignOutAlt className={styles.buttonIcon} /> Đăng xuất
           </button>
         </div>
       </header>
@@ -213,7 +214,7 @@ export default function Admin() {
       </div>
       <div className={styles.tableHeader}>
         <h2>Danh sách thẻ {activeTab === 'times' ? 'Thời điểm' : activeTab === 'majors' ? 'Ngành' : activeTab === 'technologies' ? 'Công nghệ' : activeTab === 'impacts' ? 'Tác động' : 'Gợi ý'}</h2>
-        <button className={styles.addButton} onClick={handleAdd}>Thêm</button>
+        <button className={styles.addButton} onClick={handleAdd}><FaPlus className={styles.buttonIcon} />Thêm</button>
       </div>
       <AdminTable data={data} table={activeTab} onEdit={handleEdit} onDelete={handleDelete} />
       <AddEditPopup
