@@ -217,6 +217,9 @@ export default function Admin() {
         <button className={styles.addButton} onClick={handleAdd}><FaPlus className={styles.buttonIcon} />Thêm</button>
       </div>
       <AdminTable data={data} table={activeTab} onEdit={handleEdit} onDelete={handleDelete} />
+      <div className={styles.footerText}>
+            Bản quyền thuộc về FLASH VN & được cấp phép bởi nhóm cộng đồng.
+          </div>
       <AddEditPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}

@@ -4,9 +4,8 @@
   "/_document": "pages/_document.js",
   "/login": "pages/login.js",
   "/admin": "pages/admin.js",
-  "/api/users": "pages/api/users.js",
+  "/api/player": "pages/api/player.js",
   "/": "pages/index.js",
-  "/api/times": "pages/api/times.js",
-  "/api/login": "pages/api/login.js",
-  "/api/player": "pages/api/player.js"
+  "/api/users": "pages/api/users.js",
+  "/api/technologies": "pages/api/technologies.js"
 }
