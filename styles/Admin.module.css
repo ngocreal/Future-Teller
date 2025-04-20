@@ -399,3 +399,11 @@
     font-size: 13px;
   }
 }
+.footerText {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  gap: 15px;
+  margin-top: auto; 
+  margin-bottom: 1px; 
+}

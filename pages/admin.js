@@ -169,8 +169,8 @@ export default function Admin() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1>Xin chào, {userData?.username || 'Admin'}</h1>
+      <header className={styles.header}>      
+        <h1>Chào mừng {userData?.username || 'Admin'} quay trở lại!</h1>
         <div className={styles.headerButtons}>
           <button className={styles.profileButton} onClick={() => setIsProfilePopupOpen(true)}>
           <FaUser className={styles.buttonIcon} />Hồ sơ

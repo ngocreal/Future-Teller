@@ -33,9 +33,13 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.logo}>
+            <span className={styles.logoMain}>FLASH VN</span>
+            <span className={styles.logoSub}>Building Digital-ready Community</span>
+          </div>
       <div className={styles.card}>
         <FaGraduationCap className={styles.icon} />
-        <h1 className={styles.title}>Vai trò Admin</h1>
+        <h1 className={styles.title}>Đăng nhập để chuyển sang Admin</h1>
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <FaUserAlt className={styles.inputIcon} />
