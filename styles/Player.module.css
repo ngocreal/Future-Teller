@@ -177,16 +177,6 @@
   background-color: #f0f0f0;
 }
 
-/* .footerText {
-  position: absolute;
-  bottom: 50px;
-  color: #666;
-  font-size: 14px;
-  text-align: center;
-  width: 100%;
-  line-height: 1;
-} */
-
 .cardsWrapper {
   display: flex;
   flex-direction: column;
@@ -598,9 +588,7 @@
 .sizeButton:hover {
   background-color: #FEB622;
 }
-/* Thêm vào cuối file Player.module.css */
 
-/* Đảm bảo cardsContainer căn giữa và không đảo thứ tự */
 .cardsContainer {
   display: flex;
   justify-content: center;
@@ -608,7 +596,7 @@
   transition: transform 0.5s ease;
 }
 
-/* Đảm bảo cardSlot cố định kích thước */
+/* cardSlot cố định kích thước */
 .cardSlot {
   width: 160px;
   height: 300px;
