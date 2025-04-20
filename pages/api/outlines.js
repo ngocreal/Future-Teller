@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   // Hàm kiểm tra emoji sang Unicode
   const normalizeEmoji = (emoji) => {
-    if (!emoji) return '😊'; // Giá trị mặc định
+    if (!emoji) return ''; // Giá trị mặc định
     try {
       return String.fromCodePoint(...[...emoji].map(c => c.codePointAt(0)));
     } catch (e) {

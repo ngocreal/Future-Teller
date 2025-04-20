@@ -15,7 +15,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
       setFormData(initialData);
       setImagePreview(initialData.image || null);
     } else {
-      setFormData({ emoji: '😊' });
+      setFormData({ emoji: '' });
       setImagePreview(null);
     }
   }, [initialData, isOpen]);
@@ -43,7 +43,7 @@ const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
       data.append('time', formData.time || '');
       data.append('content', formData.content || '');
       data.append('suggest', formData.suggest || '');
-      data.append('emoji', formData.emoji || '😊');
+      data.append('emoji', formData.emoji || '');
     } else {
       data.append('title', formData.title || '');
       if (formData.image instanceof File) {
@@ -56,6 +56,10 @@ const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
     }
     onSave(data);
     onClose();
+  };
+
+  const handleClearEmoji = () => {
+    setFormData({ ...formData, emoji: '' }); // Xóa emoji, đặt về chuỗi rỗng
   };
 
   const handleHeaderClick = (e) => {
@@ -150,12 +154,23 @@ const AddEditPopup = ({ isOpen, onClose, onSave, initialData, table }) => {
                   onChange={handleChange}
                   className={styles.formTextarea}
                 />
-                <label className={styles.formLabel}>Chọn Emoji: <button
+                <label className={styles.formLabel}>Chọn Emoji: {' '}
+                  <button
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                     className={styles.emojiButton}
                   >
-                    {formData.emoji || '😊'}
-                  </button></label>
+                    {formData.emoji || 'Chọn'}
+                  </button>
+                  {formData.emoji && (
+    <button
+      onClick={handleClearEmoji}
+      className={styles.emojiButton}
+      style={{ marginLeft: '10px', color: '#e65a00' }}
+    >
+      Xóa
+    </button>
+  )}
+  </label>
                 {showEmojiPicker && (
                   <div className={styles.emojiPicker}>
                     <EmojiPicker onEmojiClick={handleEmojiClick} />
