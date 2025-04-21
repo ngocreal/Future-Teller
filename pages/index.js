@@ -18,8 +18,13 @@ const Player = () => {
   const [showStartButton, setShowStartButton] = useState(true);//tt nút start
   const [dealtCards, setDealtCards] = useState([]);//list lá đã phát
   const [showQuestion, setShowQuestion] = useState(false);//kiểm soát hiển thị ques
-  const [popupWidth, setPopupWidth] = useState(500);//kth pop
-  const [popupHeight, setPopupHeight] = useState(50);
+  const [fontScale, setFontScale] = useState(1); // 1 là kích thước gốc
+  const increaseFontSize = () => {
+    setFontScale((prev) => Math.min(prev + 0.1, 3)); // Tăng tối đa 2 lần (giới hạn)
+  };
+  const decreaseFontSize = () => {
+    setFontScale((prev) => Math.max(prev - 0.1, 0.5)); // Giảm tối thiểu 0.5 lần (giới hạn)
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +84,7 @@ const Player = () => {
           console.log('dealtCards sau khi phát:', dealtCards);
           setGameState('flipping');
           flipCardsSequentially();
-        }, 3000);
+        }, 2000);
       }
     }, 500);
   };
@@ -223,10 +228,10 @@ const Player = () => {
 
   const howToPlayContent = (
     <>
-      <p>
+      <p style={{ fontSize: `${25 * fontScale}px` }}>
         Future Teller là một trò chơi kích thích tư duy, thảo luận nhóm để đưa ra các dự đoán về tương lai theo các câu hỏi tương ứng với 4 yếu tố gồm: Thời điểm, Ngành, Công nghệ, và Tác động.
       </p>
-      <p>
+      <p style={{ fontSize: `${25 * fontScale}px` }}>
         Khi chọn ‘Bắt đầu’, mỗi nhóm sẽ được phát 4 thẻ bài tương ứng với 4 yếu tố khác nhau được ghép thành câu hỏi hoàn chỉnh. Sau khi (các) nhóm có đủ câu hỏi, giáo viên/ quản trò có thể chọn nút ‘Gợi ý thảo luận’ để dẫn dắt cuộc thảo luận.
       </p>
     </>
@@ -234,13 +239,13 @@ const Player = () => {
 
   const suggestionContent = outlines[currentOutlineIndex] ? (
     <>
-      <h1 style={{ fontWeight: 'bold' }}>
+      <h1 style={{ fontWeight: 'bold', fontSize: `${25 * fontScale}px` }}>
         {outlines[currentOutlineIndex].step}: {outlines[currentOutlineIndex].title} ({outlines[currentOutlineIndex].time})
       </h1>
-      <div style={{ textAlign: 'center', fontSize: '24px', margin: '10px 0' }}>
+      <div style={{ textAlign: 'center', fontSize: `${45 * fontScale}px`, margin: '10px 0' }}>
         {outlines[currentOutlineIndex].emoji}
       </div>
-      <p>
+      <p style={{ fontSize: `${25 * fontScale}px` }}>
         {outlines[currentOutlineIndex].content.split('\n').map((line, index) => (
           <span key={index}>
             {line}
@@ -248,7 +253,7 @@ const Player = () => {
           </span>
         ))}
       </p>
-      <p>
+      <p style={{ fontSize: `${25 * fontScale}px` }}>
         {outlines[currentOutlineIndex].suggest.split('\n').map((line, index) => (
           <span key={index}>
             {line}
@@ -258,7 +263,7 @@ const Player = () => {
       </p>
     </>
   ) : (
-    <p>Không có dữ liệu gợi ý.</p>
+    <p style={{ fontSize: `${25 * fontScale}px` }}>Không có dữ liệu gợi ý.</p>
   );
 
   return (
@@ -291,9 +296,14 @@ const Player = () => {
 
       {gameState === 'emptySlots' && (
         <div className={styles.cardsWrapper}>
+          <div className={styles.questionContainer} style={{marginBottom: '40px'}}>
+      <p className={styles.question}>Bạn đã sẵn sàng cho câu hỏi chưa nào?</p>
+    </div>
           <div className={styles.cardsContainer}>
             {[...Array(4)].map((_, index) => (
-              <div key={index} className={styles.emptySlot}></div>
+              <div key={index} className={styles.emptySlot}>
+                <div className={styles.slotQuestionMark}>?</div>
+              </div>
             ))}
           </div>
           <div className={styles.buttonContainer}>
@@ -377,31 +387,29 @@ const Player = () => {
       </button>
 
       <GamePopup
-        isOpen={isPopupOpen}
-        onClose={closePopup}
-        title="Quy trình thảo luận"
-        content={suggestionContent}
-        showNavigation={true}
-        onNext={nextSuggestion}
-        onPrev={prevSuggestion}
-        step={currentOutlineIndex + 1}
-        popupWidth={popupWidth}
-        popupHeight={popupHeight}
-        onIncreaseSize={increasePopupSize}
-        onDecreaseSize={decreasePopupSize}
-      />
+  isOpen={isPopupOpen}
+  onClose={closePopup}
+  title="Quy trình thảo luận"
+  content={suggestionContent}
+  showNavigation={true}
+  onNext={nextSuggestion}
+  onPrev={prevSuggestion}
+  step={currentOutlineIndex + 1}
+  fontScale={fontScale}
+  onIncreaseSize={increaseFontSize}
+  onDecreaseSize={decreaseFontSize}
+/>
 
-      <GamePopup
-        isOpen={isHowToPlayOpen}
-        onClose={closeHowToPlay}
-        title="Cách chơi"
-        content={howToPlayContent}
-        showNavigation={false}
-        popupWidth={popupWidth}
-        popupHeight={popupHeight}
-        onIncreaseSize={increasePopupSize}
-        onDecreaseSize={decreasePopupSize}
-      />
+<GamePopup
+  isOpen={isHowToPlayOpen}
+  onClose={closeHowToPlay}
+  title="Cách chơi"
+  content={howToPlayContent}
+  showNavigation={false}
+  fontScale={fontScale}
+  onIncreaseSize={increaseFontSize}
+  onDecreaseSize={decreaseFontSize}
+/>
     </div>
   );
 };

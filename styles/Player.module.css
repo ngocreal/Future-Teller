@@ -201,6 +201,11 @@
   border: 2px dashed #1B1B62;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .cardSlot {
@@ -447,14 +452,13 @@
   background-color: #FFF5E6;
   border: 2px solid #1B1B62;
   border-radius: 8px;
-  max-width: 90%; /* không vượt quá 90% màn hình */
+  width: 700px; 
+  height: 500px; 
   padding: 0;
-  overflow-y: auto;
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease, max-height 0.3s ease; /* Hiệu ứng mượt khi thay đổi kích thước */
 }
 
 .popupHeader {
@@ -462,29 +466,44 @@
   padding: 15px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  font-size: 40px;
   font-weight: bold;
   user-select: none;
   text-align: center;
+  position: relative;
+  flex-shrink: 0; 
 }
 
 .popupContent {
   padding: 15px;
-  font-size: 18px;
   color: #333;
   line-height: 1.5;
+  overflow-wrap: break-word; /* tự động xuống dòng */
+  overflow-y: auto; /* Cuộn dọc  */
+  flex-grow: 1; 
 }
 
-.popupContent h3 {
-  color: #1B1B62;
-  font-size: 16px;
-  margin-top: 0;
+.suggestionContent, .howToPlayContent {
+  width: 100%; /*nội dung không vượt quá popup */
+  overflow-wrap: break-word; /* tự động xuống dòng */
+}
+.headerDivider {
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  right: 15px;
+  height: 1px;
+  background-color: #1B1B62;
+}
+
+.popupWrapper {
+  position: relative; /* Đảm bảo các nút con được định vị tương đối với popup */
+  display: inline-block;
 }
 
 .closeButton {
   position: absolute;
   top: -12px;
-  right: 55px;
+  right: -12px; /* Cố định ở góc trên bên phải */
   background: #1B1B62;
   border: none;
   border-radius: 50%;
@@ -502,14 +521,48 @@
   background-color: #FEB622;
 }
 
-.buttonContainer {
+.navigationButtons {
+  position: absolute;
+  bottom: -40px; 
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
   gap: 15px;
-  margin-bottom: 50px;
-  margin-top: 50px; /* Tăng khoảng cách giữa 4 ô trống và nút Chia bài */
+  z-index: 1001; /* Đảm bảo nút không bị che */
 }
 
+/* nút "Bước kế tiếp" */
+.navigationButtons .nextButton {
+  background-color: #1B1B62;
+  color: white;
+  border: none;
+  padding: 12px 50px; /* Giữ padding giống trước đây */
+  border-radius: 20px;
+  font-size: 18px; 
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.navigationButtons .nextButton:hover {
+  background-color: #FEB622;
+}
+
+/* nút "Bước trước"  */
+.navigationButtons .prevButton {
+  background-color: white;
+  color: #1B1B62;
+  border: 2px solid #1B1B62;
+  padding: 12px 20px; /* Giữ padding giống trước đây */
+  border-radius: 20px;
+  font-size: 16px; /* Font nhỏ hơn một chút */
+  cursor: pointer;
+}
+
+.navigationButtons .prevButton:hover {
+  background-color: #FEB622;
+}
+
+/* dùng khi không nằm trong .navigationButtons*/
 .nextButton {
   background-color: #1B1B62;
   color: white;
@@ -539,29 +592,21 @@
 }
 
 .suggestionButtonContainer {
+  border-top: none;
+}
+
+.buttonContainer {
   display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
+  flex-direction: column;
   gap: 15px;
-  padding: 15px;
-  margin-top: 20px; 
-  margin-bottom: 20px; 
-  border-top: 1px solid #1B1B62;
+  margin-bottom: 50px;
+  margin-top: 50px; /* Tăng khoảng cách giữa 4 ô trống và nút Chia bài */
 }
 
-/* nút "Bước kế tiếp"  */
-.suggestionButtonContainer .nextButton {
-  padding: 12px 50px; 
-  font-size: 18px; 
-  font-weight: bold; 
+/* Bỏ border-top của suggestionButtonContainer vì đã dời lên trên */
+.suggestionButtonContainer {
+  border-top: none;
 }
-
-/*nút "Bước trước" */
-.suggestionButtonContainer .prevButton {
-  padding: 12px 20px;
-  font-size: 16px;
-}
-
 /* nút phóng to/thu nhỏ */
 .sizeControlContainer {
   display: flex;
@@ -578,7 +623,7 @@
   border-radius: 50%;
   width: 30px;
   height: 30px;
-  font-size: 20px;
+  font-size: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -638,7 +683,7 @@
   }
 }
 
-/* Debug label để kiểm tra */
+/* kiểm tra */
 .debugLabel {
   position: absolute;
   top: 10px;
@@ -657,4 +702,11 @@
   gap: 15px;
   margin-top: auto; 
   margin-bottom: 1px; 
+}
+
+.slotQuestionMark {
+  font-size: 48px;
+  font-weight: bold;
+  color: #1B1B62;
+  text-align: center;
 }
