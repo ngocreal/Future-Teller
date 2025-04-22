@@ -1,12 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/api/login": "pages/api/login.js",
-  "/login": "pages/login.js",
-  "/admin": "pages/admin.js",
-  "/api/player": "pages/api/player.js",
-  "/api/users": "pages/api/users.js",
-  "/api/times": "pages/api/times.js"
-}
+{"/_app":"pages/_app.js","/admin":"pages/admin.html","/api/login":"pages/api/login.js","/_error":"pages/_error.js","/api/player":"pages/api/player.js","/":"pages/index.html","/login":"pages/login.html","/api/users":"pages/api/users.js","/api/times":"pages/api/times.js","/api/impacts":"pages/api/impacts.js","/api/majors":"pages/api/majors.js","/api/outlines":"pages/api/outlines.js","/api/technologies":"pages/api/technologies.js","/_document":"pages/_document.js","/404":"pages/404.html"}

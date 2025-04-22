@@ -263,7 +263,7 @@
 
 .cardBack {
   background-color: #e65a00;
-  background-image: url('/images/card-back.png');
+  /* background-image: url('/images/card-back.png'); */
   background-size: cover;
 }
 
