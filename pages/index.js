@@ -332,7 +332,9 @@ const Player = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className={styles.emptySlot}></div>
+                    <div className={styles.emptySlot}>
+                    <div className={styles.slotQuestionMark}>?</div>
+                    </div>
                   )}
                 </div>
               );
