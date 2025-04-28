@@ -15,12 +15,15 @@ export default function Admin() {
   const [editData, setEditData] = useState(null);
   const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
   const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] = useState(false);
+  const [isChangeUsernamePopupOpen, setIsChangeUsernamePopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [newUsername, setNewUsername] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [currentPasswordForUsernameChange, setCurrentPasswordForUsernameChange] = useState('');
 
-  // Kiểm tra trạng thái đăng nhập ngay khi trang tải
   useEffect(() => {
     const username = localStorage.getItem('user');
     if (!username) {
@@ -161,6 +164,66 @@ export default function Admin() {
     }
   };
 
+  const handleChangeUsernameAndEmail = async () => {
+    if (!userData || !userData.id) {
+      toast.error('Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.');
+      setIsChangeUsernamePopupOpen(false);
+      return;
+    }
+    if (!newUsername) {
+      toast.error('Vui lòng nhập tên đăng nhập mới');
+      return;
+    }
+    if (!newEmail) {
+      toast.error('Vui lòng nhập email mới');
+      return;
+    }
+    if (!currentPasswordForUsernameChange) {
+      toast.error('Vui lòng nhập mật khẩu hiện tại');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newEmail)) {
+      toast.error('Email không hợp lệ');
+      return;
+    }
+    try {
+      // Kiểm tra mật khẩu hiện tại
+      const loginRes = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: userData.username, password: currentPasswordForUsernameChange }),
+      });
+      const loginData = await loginRes.json();
+      if (!loginData.success) {
+        toast.error('Mật khẩu hiện tại không đúng');
+        return;
+      }
+
+      // Nếu mật khẩu đúng, tiến hành cập nhật username và email
+      const res = await fetch('/api/users', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: userData.id, username: newUsername, email: newEmail }),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        toast.success('Cập nhật thông tin thành công');
+        localStorage.setItem('user', newUsername);
+        setIsChangeUsernamePopupOpen(false);
+        setNewUsername('');
+        setNewEmail('');
+        setCurrentPasswordForUsernameChange('');
+        fetchUserData(newUsername);
+      } else {
+        toast.error(result.error || 'Cập nhật thông tin thất bại. Vui lòng thử lại.');
+      }
+    } catch (error) {
+      console.error('Lỗi khi cập nhật thông tin:', error);
+      toast.error('Lỗi server: ' + error.message);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('user');
     toast.success('Đăng xuất thành công');
@@ -173,10 +236,10 @@ export default function Admin() {
         <h1>Chào mừng {userData?.username || 'Admin'} quay trở lại!</h1>
         <div className={styles.headerButtons}>
           <button className={styles.profileButton} onClick={() => setIsProfilePopupOpen(true)}>
-          <FaUser className={styles.buttonIcon} />Hồ sơ
+            <FaUser className={styles.buttonIcon} />Hồ sơ
           </button>
           <button className={styles.logoutButton} onClick={handleLogout}>
-          <FaSignOutAlt className={styles.buttonIcon} /> Đăng xuất
+            <FaSignOutAlt className={styles.buttonIcon} /> Đăng xuất
           </button>
         </div>
       </header>
@@ -218,8 +281,8 @@ export default function Admin() {
       </div>
       <AdminTable data={data} table={activeTab} onEdit={handleEdit} onDelete={handleDelete} />
       <div className={styles.footerText}>
-            Bản quyền thuộc về FLASH VN & được cấp phép bởi nhóm cộng đồng.
-          </div>
+        Bản quyền thuộc về FLASH VN & được cấp phép bởi nhóm cộng đồng.
+      </div>
       <AddEditPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
@@ -258,6 +321,18 @@ export default function Admin() {
                 />
               </div>
               <div className={styles.popupButtons}>
+              <button
+                  className={styles.editButton}
+                  onClick={() => {
+                    setIsProfilePopupOpen(false);
+                    setIsChangeUsernamePopupOpen(true);
+                    setNewUsername(userData.username);
+                    setNewEmail(userData.email);
+                    setCurrentPasswordForUsernameChange(''); // Reset mật khẩu khi mở popup
+                  }}
+                >
+                  Đổi tên đăng nhập
+                </button>
                 <button
                   className={styles.editButton}
                   onClick={() => {
@@ -266,7 +341,7 @@ export default function Admin() {
                   }}
                 >
                   Đổi mật khẩu
-                </button>
+                </button>                
               </div>
             </div>
             <button className={styles.closeButton} onClick={() => setIsProfilePopupOpen(false)}>
@@ -318,6 +393,54 @@ export default function Admin() {
               </div>
             </div>
             <button className={styles.closeButton} onClick={() => setIsChangePasswordPopupOpen(false)}>
+              <b>X</b>
+            </button>
+          </div>
+        </div>
+      )}
+      {isChangeUsernamePopupOpen && userData && (
+        <div className={styles.popupOverlay}>
+          <div className={styles.popupWrapper}>
+            <div className={styles.popup}>
+              <div className={styles.popupHeader}>
+                <h1 style={{ margin: 0, flex: 1, textAlign: 'center' }}>Cập nhật thông tin</h1>
+              </div>
+              <div className={styles.formContainer}>
+                <label className={styles.formLabel}>Tên đăng nhập:</label>
+                <input
+                  type="text"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  className={styles.formInput}
+                  placeholder="Nhập tên đăng nhập mới"
+                />
+                <label className={styles.formLabel}>Email:</label>
+                <input
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  className={styles.formInput}
+                  placeholder="Nhập email mới"
+                />
+                <label className={styles.formLabel}>Mật khẩu hiện tại:</label>
+                <input
+                  type="password"
+                  value={currentPasswordForUsernameChange}
+                  onChange={(e) => setCurrentPasswordForUsernameChange(e.target.value)}
+                  className={styles.formInput}
+                  placeholder="Nhập mật khẩu hiện tại"
+                />
+              </div>
+              <div className={styles.popupButtons}>
+                <button onClick={handleChangeUsernameAndEmail} className={styles.saveButton}>
+                  Xác nhận
+                </button>
+                <button onClick={() => setIsChangeUsernamePopupOpen(false)} className={styles.cancelButton}>
+                  Hủy
+                </button>
+              </div>
+            </div>
+            <button className={styles.closeButton} onClick={() => setIsChangeUsernamePopupOpen(false)}>
               <b>X</b>
             </button>
           </div>
