@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   try {
     switch (method) {
       case 'GET':
-        const [rows] = await pool.query('SELECT * FROM outlines');
+        const { rows } = await pool.query('SELECT * FROM outlines');
         res.status(200).json(rows);
         break;
 
@@ -58,14 +58,14 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: 'Tiêu đề là bắt buộc' });
         }
 
-        const [existing] = await pool.query('SELECT * FROM outlines WHERE title = ?', [postTitle]);
+        const { rows: existing } = await pool.query('SELECT * FROM outlines WHERE title = $1', [postTitle]);
         if (existing.length > 0) {
           return res.status(400).json({ error: 'Tiêu đề đã tồn tại' });
         }
 
         const postEmoji = normalizeEmoji(formDataPost.emoji);
         await pool.query(
-          'INSERT INTO outlines (step, title, time, content, suggest, emoji) VALUES (?, ?, ?, ?, ?, ?)',
+          'INSERT INTO outlines (step, title, time, content, suggest, emoji) VALUES ($1, $2, $3, $4, $5, $6)',
           [
             formDataPost.step || '',
             postTitle,
@@ -115,14 +115,14 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: 'Tiêu đề là bắt buộc' });
         }
 
-        const [existingUpdate] = await pool.query('SELECT * FROM outlines WHERE title = ? AND id != ?', [updateTitle, updateId]);
+        const { rows: existingUpdate } = await pool.query('SELECT * FROM outlines WHERE title = $1 AND id != $2', [updateTitle, updateId]);
         if (existingUpdate.length > 0) {
           return res.status(400).json({ error: 'Tiêu đề đã tồn tại' });
         }
 
         const updateEmoji = normalizeEmoji(formDataPut.emoji);
         await pool.query(
-          'UPDATE outlines SET step = ?, title = ?, time = ?, content = ?, suggest = ?, emoji = ? WHERE id = ?',
+          'UPDATE outlines SET step = $1, title = $2, time = $3, content = $4, suggest = $5, emoji = $6 WHERE id = $7',
           [
             formDataPut.step || '',
             updateTitle,
@@ -149,7 +149,7 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: 'Thiếu id trong body' });
         }
 
-        await pool.query('DELETE FROM outlines WHERE id = ?', [deleteId]);
+        await pool.query('DELETE FROM outlines WHERE id = $1', [deleteId]);
         res.status(200).json({ message: 'Xóa thành công' });
         break;
 

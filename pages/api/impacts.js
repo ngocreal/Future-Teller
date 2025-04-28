@@ -13,94 +13,104 @@ const upload = multer({
   }),
 });
 
-const runMiddleware = (req, res, fn) => {
-  return new Promise((resolve, reject) => {
+const runMiddleware = (req, res, fn) =>
+  new Promise((resolve, reject) => {
     fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
+      if (result instanceof Error) return reject(result);
       return resolve(result);
     });
   });
-};
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
-  const { method } = req;
-
   try {
-    switch (method) {
-      case 'GET':
-        const [rows] = await pool.query('SELECT * FROM impacts');
-        res.status(200).json(rows);
-        break;
+    switch (req.method) {
+      case 'GET': {
+        const result = await pool.query('SELECT * FROM impacts;');
+        return res.status(200).json(result.rows);
+      }
 
-      case 'POST':
+      case 'POST': {
         await runMiddleware(req, res, upload.single('image'));
         const { title } = req.body;
+        if (!title) return res.status(400).json({ error: 'Thiếu title' });
 
-        const [existing] = await pool.query('SELECT * FROM impacts WHERE title = ?', [title]);
-        if (existing.length > 0) {
+        const exists = await pool.query(
+          'SELECT id FROM impacts WHERE title = $1',
+          [title]
+        );
+        if (exists.rows.length > 0) {
           return res.status(400).json({ error: 'Tiêu đề đã tồn tại' });
         }
 
-        const image = req.file ? `/uploads/${req.file.filename}` : null;
-        await pool.query('INSERT INTO impacts (title, image) VALUES (?, ?)', [title, image]);
-        res.status(201).json({ message: 'Thêm thành công' });
-        break;
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+        await pool.query(
+          'INSERT INTO impacts (title, image) VALUES ($1, $2)',
+          [title, imagePath]
+        );
+        return res.status(201).json({ message: 'Thêm thành công' });
+      }
 
-      case 'PUT':
+      case 'PUT': {
         await runMiddleware(req, res, upload.single('image'));
-        const { id, title: updateTitle } = req.body;
+        const { id, title: newTitle } = req.body;
+        if (!id || !newTitle) {
+          return res.status(400).json({ error: 'Thiếu id hoặc title' });
+        }
 
-        const [existingUpdate] = await pool.query('SELECT * FROM impacts WHERE title = ? AND id != ?', [updateTitle, id]);
-        if (existingUpdate.length > 0) {
+        const dup = await pool.query(
+          'SELECT id FROM impacts WHERE title = $1 AND id != $2',
+          [newTitle, id]
+        );
+        if (dup.rows.length > 0) {
           return res.status(400).json({ error: 'Tiêu đề đã tồn tại' });
         }
 
-        const [current] = await pool.query('SELECT image FROM impacts WHERE id = ?', [id]);
-        if (req.file && current[0]?.image) {
-          const oldImagePath = path.join(process.cwd(), 'public', current[0].image);
-          await fs.unlink(oldImagePath).catch(() => {});
+        // Fetch current image to delete if replaced
+        const curr = await pool.query(
+          'SELECT image FROM impacts WHERE id = $1',
+          [id]
+        );
+        const currentImage = curr.rows[0]?.image;
+        if (req.file && currentImage) {
+          await fs.unlink(path.join(process.cwd(), 'public', currentImage)).catch(() => {});
         }
 
-        const updateImage = req.file ? `/uploads/${req.file.filename}` : current[0]?.image;
-        await pool.query('UPDATE impacts SET title = ?, image = ? WHERE id = ?', [updateTitle, updateImage, id]);
-        res.status(200).json({ message: 'Sửa thành công' });
-        break;
+        const updatedImage = req.file ? `/uploads/${req.file.filename}` : currentImage;
+        await pool.query(
+          'UPDATE impacts SET title = $1, image = $2 WHERE id = $3',
+          [newTitle, updatedImage, id]
+        );
+        return res.status(200).json({ message: 'Sửa thành công' });
+      }
 
-      case 'DELETE':
+      case 'DELETE': {
         let body = '';
-        req.on('data', chunk => {
-          body += chunk.toString();
-        });
-        await new Promise(resolve => req.on('end', resolve));
-        const parsedBody = body ? JSON.parse(body) : {};
-        const { id: deleteId } = parsedBody;
-
+        req.on('data', chunk => { body += chunk.toString(); });
+        await new Promise(r => req.on('end', r));
+        const { id: deleteId } = body ? JSON.parse(body) : {};
         if (!deleteId) {
           return res.status(400).json({ error: 'Thiếu id trong body' });
         }
 
-        const [record] = await pool.query('SELECT image FROM impacts WHERE id = ?', [deleteId]);
-        if (record[0]?.image) {
-          const imagePath = path.join(process.cwd(), 'public', record[0].image);
-          await fs.unlink(imagePath).catch(() => {});
-        }
-        await pool.query('DELETE FROM impacts WHERE id = ?', [deleteId]);
-        res.status(200).json({ message: 'Xóa thành công' });
-        break;
+        const rec = await pool.query(
+          'SELECT image FROM impacts WHERE id = $1',
+          [deleteId]
+        );
+        const img = rec.rows[0]?.image;
+        if (img) await fs.unlink(path.join(process.cwd(), 'public', img)).catch(() => {});
+
+        await pool.query('DELETE FROM impacts WHERE id = $1', [deleteId]);
+        return res.status(200).json({ message: 'Xóa thành công' });
+      }
 
       default:
-        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-        res.status(405).end(`Method ${method} Not Allowed`);
+        res.setHeader('Allow', ['GET','POST','PUT','DELETE']);
+        return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Impacts API error:', error);
+    return res.status(500).json({ error: error.message });
   }
 }

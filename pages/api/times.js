@@ -3,6 +3,7 @@ import multer from 'multer';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+// Config multer file uploads
 const upload = multer({
   storage: multer.diskStorage({
     destination: './public/uploads/',
@@ -13,52 +14,50 @@ const upload = multer({
   }),
 });
 
-const runMiddleware = (req, res, fn) => {
-  return new Promise((resolve, reject) => {
+// Helper to run multer as middleware
+const runMiddleware = (req, res, fn) =>
+  new Promise((resolve, reject) => {
     fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
+      if (result instanceof Error) return reject(result);
       return resolve(result);
     });
   });
-};
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
-  const { method } = req;
-
   try {
-    switch (method) {
-      case 'GET':
-        const [rows] = await pool.query('SELECT * FROM times');
-        res.status(200).json(rows);
-        break;
+    switch (req.method) {
+      case 'GET': {
+        const result = await pool.query('SELECT * FROM times;');
+        return res.status(200).json(result.rows);
+      }
 
-      case 'POST':
+      case 'POST': {
         await runMiddleware(req, res, upload.single('image'));
         const { title } = req.body;
-
         if (!title) {
           return res.status(400).json({ error: 'Tiêu đề không được để trống' });
         }
 
-        const [existing] = await pool.query('SELECT * FROM times WHERE title = ?', [title]);
-        if (existing.length > 0) {
+
+        const exists = await pool.query(
+          'SELECT id FROM times WHERE title = $1',
+          [title]
+        );
+        if (exists.rows.length > 0) {
           return res.status(400).json({ error: 'Tiêu đề đã tồn tại' });
         }
 
-        const image = req.file ? `/uploads/${req.file.filename}` : null;
-        await pool.query('INSERT INTO times (title, image) VALUES (?, ?)', [title, image]);
-        res.status(201).json({ message: 'Thêm thành công' });
-        break;
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+        await pool.query(
+          'INSERT INTO times (title, image) VALUES ($1, $2)',
+          [title, imagePath]
+        );
+        return res.status(201).json({ message: 'Thêm thành công' });
+      }
 
-      case 'PUT':
+      case 'PUT': {
         await runMiddleware(req, res, upload.single('image'));
         const { id, title: updateTitle } = req.body;
 
@@ -69,57 +68,69 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: 'Tiêu đề không được để trống' });
         }
 
-        const [existingUpdate] = await pool.query('SELECT * FROM times WHERE title = ? AND id != ?', [updateTitle, id]);
-        if (existingUpdate.length > 0) {
+        // kt update title
+        const dup = await pool.query(
+          'SELECT id FROM times WHERE title = $1 AND id != $2',
+          [updateTitle, id]
+        );
+        if (dup.rows.length > 0) {
           return res.status(400).json({ error: 'Tiêu đề đã tồn tại' });
         }
 
-        const [current] = await pool.query('SELECT image FROM times WHERE id = ?', [id]);
-        if (current.length === 0) {
+        // Fetch current record
+        const curr = await pool.query(
+          'SELECT image FROM times WHERE id = $1',
+          [id]
+        );
+        if (curr.rows.length === 0) {
           return res.status(404).json({ error: 'Bản ghi không tồn tại' });
         }
 
-        if (req.file && current[0]?.image) {
-          const oldImagePath = path.join(process.cwd(), 'public', current[0].image);
-          await fs.unlink(oldImagePath).catch(() => {});
+        const currentImage = curr.rows[0].image;
+        if (req.file && currentImage) {
+          await fs.unlink(path.join(process.cwd(), 'public', currentImage)).catch(() => {});
         }
 
-        const updateImage = req.file ? `/uploads/${req.file.filename}` : current[0]?.image;
-        await pool.query('UPDATE times SET title = ?, image = ? WHERE id = ?', [updateTitle, updateImage, id]);
-        res.status(200).json({ message: 'Sửa thành công' });
-        break;
+        const newImage = req.file ? `/uploads/${req.file.filename}` : currentImage;
+        await pool.query(
+          'UPDATE times SET title = $1, image = $2 WHERE id = $3',
+          [updateTitle, newImage, id]
+        );
+        return res.status(200).json({ message: 'Sửa thành công' });
+      }
 
-      case 'DELETE':
+      case 'DELETE': {
         let body = '';
-        req.on('data', chunk => {
-          body += chunk.toString();
-        });
-        await new Promise(resolve => req.on('end', resolve));
-        const parsedBody = body ? JSON.parse(body) : {};
-        const { id: deleteId } = parsedBody;
+        req.on('data', chunk => { body += chunk.toString(); });
+        await new Promise(r => req.on('end', r));
+        const { id: deleteId } = body ? JSON.parse(body) : {};
 
         if (!deleteId || isNaN(deleteId)) {
           return res.status(400).json({ error: 'ID không hợp lệ' });
         }
 
-        const [record] = await pool.query('SELECT image FROM times WHERE id = ?', [deleteId]);
-        if (record.length === 0) {
+        // Fetch record to delete image
+        const rec = await pool.query(
+          'SELECT image FROM times WHERE id = $1',
+          [deleteId]
+        );
+        if (rec.rows.length === 0) {
           return res.status(404).json({ error: 'Bản ghi không tồn tại' });
         }
 
-        if (record[0]?.image) {
-          const imagePath = path.join(process.cwd(), 'public', record[0].image);
-          await fs.unlink(imagePath).catch(() => {});
-        }
-        await pool.query('DELETE FROM times WHERE id = ?', [deleteId]);
-        res.status(200).json({ message: 'Xóa thành công' });
-        break;
+        const img = rec.rows[0].image;
+        if (img) await fs.unlink(path.join(process.cwd(), 'public', img)).catch(() => {});
+
+        await pool.query('DELETE FROM times WHERE id = $1', [deleteId]);
+        return res.status(200).json({ message: 'Xóa thành công' });
+      }
 
       default:
-        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-        res.status(405).end(`Method ${method} Not Allowed`);
+        res.setHeader('Allow', ['GET','POST','PUT','DELETE']);
+        return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Times API error:', error);
+    return res.status(500).json({ error: error.message });
   }
 }
