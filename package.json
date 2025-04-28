@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "emoji-picker-react": "^4.12.2",
